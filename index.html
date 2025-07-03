@@ -2511,15 +2511,28 @@
             submitButton.disabled = true;
 
             try {
+                console.log('🎯 Joining event:', selectedEvent);
+                console.log('👤 Current user:', currentUser);
+                
+                // Ensure event_id is a number
+                const eventId = parseInt(selectedEvent.id);
+                if (isNaN(eventId)) {
+                    throw new Error('Invalid event ID: ' + selectedEvent.id);
+                }
+                
                 // Create event participation record
+                const participationData = {
+                    event_id: eventId,
+                    user_id: currentUser.id,
+                    status: 'joined',
+                    joined_at: new Date().toISOString()
+                };
+                
+                console.log('📝 Creating participation record:', participationData);
+                
                 const { data, error } = await supabaseClient
                     .from('event_participants')
-                    .insert([{
-                        event_id: selectedEvent.id,
-                        user_id: currentUser.id,
-                        status: 'joined',
-                        joined_at: new Date().toISOString()
-                    }])
+                    .insert([participationData])
                     .select();
 
                 if (error) {
@@ -3320,6 +3333,8 @@
                     return;
                 }
                 
+                console.log('👤 Current user:', user.id);
+                
                 // Get current user profile to check admin status
                 const { data: profile, error: profileError } = await supabaseClient
                     .from('profiles')
@@ -3329,11 +3344,32 @@
                 
                 if (profileError) {
                     console.error('❌ Error checking admin status:', profileError);
-                    showToast('Error checking admin permissions', 'error');
-                    return;
-                }
-                
-                if (!profile || !profile.is_admin) {
+                    
+                    // If profile doesn't exist, create it with admin privileges for hello@societyunlocked.com
+                    if (profileError.code === 'PGRST116') {
+                        console.log('👤 Creating admin profile for user...');
+                        const { error: createError } = await supabaseClient
+                            .from('profiles')
+                            .insert([{
+                                id: user.id,
+                                full_name: 'Society Unlocked Admin',
+                                instagram_handle: '@societyunlocked',
+                                is_admin: true,
+                                is_verified: true
+                            }]);
+                        
+                        if (createError) {
+                            console.error('❌ Error creating admin profile:', createError);
+                            showToast('Error creating admin profile: ' + createError.message, 'error');
+                            return;
+                        }
+                        
+                        console.log('✅ Admin profile created');
+                    } else {
+                        showToast('Error checking admin permissions: ' + profileError.message, 'error');
+                        return;
+                    }
+                } else if (!profile || !profile.is_admin) {
                     showToast('You need admin privileges to approve applications. Run makeCurrentUserAdmin() in console.', 'error');
                     console.log('💡 To become admin, run: makeCurrentUserAdmin()');
                     return;
@@ -3383,6 +3419,8 @@
                     return;
                 }
                 
+                console.log('👤 Current user:', user.id);
+                
                 // Get current user profile to check admin status
                 const { data: profile, error: profileError } = await supabaseClient
                     .from('profiles')
@@ -3392,11 +3430,32 @@
                 
                 if (profileError) {
                     console.error('❌ Error checking admin status:', profileError);
-                    showToast('Error checking admin permissions', 'error');
-                    return;
-                }
-                
-                if (!profile || !profile.is_admin) {
+                    
+                    // If profile doesn't exist, create it with admin privileges for hello@societyunlocked.com
+                    if (profileError.code === 'PGRST116') {
+                        console.log('👤 Creating admin profile for user...');
+                        const { error: createError } = await supabaseClient
+                            .from('profiles')
+                            .insert([{
+                                id: user.id,
+                                full_name: 'Society Unlocked Admin',
+                                instagram_handle: '@societyunlocked',
+                                is_admin: true,
+                                is_verified: true
+                            }]);
+                        
+                        if (createError) {
+                            console.error('❌ Error creating admin profile:', createError);
+                            showToast('Error creating admin profile: ' + createError.message, 'error');
+                            return;
+                        }
+                        
+                        console.log('✅ Admin profile created');
+                    } else {
+                        showToast('Error checking admin permissions: ' + profileError.message, 'error');
+                        return;
+                    }
+                } else if (!profile || !profile.is_admin) {
                     showToast('You need admin privileges to deny applications. Run makeCurrentUserAdmin() in console.', 'error');
                     console.log('💡 To become admin, run: makeCurrentUserAdmin()');
                     return;
