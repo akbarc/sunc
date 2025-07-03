@@ -221,49 +221,55 @@ CREATE TRIGGER update_participant_count
     AFTER INSERT OR DELETE ON event_participants
     FOR EACH ROW EXECUTE FUNCTION update_event_participant_count();
 
--- Update RLS policies to include admin checks
--- Drop old policies first, then create new ones
-DROP POLICY IF EXISTS "Events can be created by authenticated users" ON events;
-DROP POLICY IF EXISTS "Events can be updated by authenticated users" ON events;
-DROP POLICY IF EXISTS "Events can be deleted by authenticated users" ON events;
-DROP POLICY IF EXISTS "Events can be created by admins" ON events;
-DROP POLICY IF EXISTS "Events can be updated by admins" ON events;
-DROP POLICY IF EXISTS "Events can be deleted by admins" ON events;
-
-CREATE POLICY "Events can be created by admins" ON events FOR INSERT WITH CHECK (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-CREATE POLICY "Events can be updated by admins" ON events FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-CREATE POLICY "Events can be deleted by admins" ON events FOR DELETE USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-
--- Update applications policies
-DROP POLICY IF EXISTS "Applications can be viewed by authenticated users" ON applications;
-DROP POLICY IF EXISTS "Applications can be updated by authenticated users" ON applications;
-DROP POLICY IF EXISTS "Applications can be viewed by admins" ON applications;
-DROP POLICY IF EXISTS "Applications can be updated by admins" ON applications;
-
-CREATE POLICY "Applications can be viewed by admins" ON applications FOR SELECT USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-CREATE POLICY "Applications can be updated by admins" ON applications FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-
--- Add admin policy for profiles
-DROP POLICY IF EXISTS "Admins can update any profile" ON profiles;
-CREATE POLICY "Admins can update any profile" ON profiles FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-
--- Add admin policy for event participants
-DROP POLICY IF EXISTS "Admins can manage all participants" ON event_participants;
-CREATE POLICY "Admins can manage all participants" ON event_participants FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
+-- Only add policies that don't already exist
+DO $$
+BEGIN
+    -- Check and add Events policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'events' AND policyname = 'Events can be created by admins') THEN
+        CREATE POLICY "Events can be created by admins" ON events FOR INSERT WITH CHECK (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'events' AND policyname = 'Events can be updated by admins') THEN
+        CREATE POLICY "Events can be updated by admins" ON events FOR UPDATE USING (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'events' AND policyname = 'Events can be deleted by admins') THEN
+        CREATE POLICY "Events can be deleted by admins" ON events FOR DELETE USING (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+    
+    -- Check and add Applications policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'applications' AND policyname = 'Applications can be viewed by admins') THEN
+        CREATE POLICY "Applications can be viewed by admins" ON applications FOR SELECT USING (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'applications' AND policyname = 'Applications can be updated by admins') THEN
+        CREATE POLICY "Applications can be updated by admins" ON applications FOR UPDATE USING (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+    
+    -- Check and add Profiles policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'profiles' AND policyname = 'Admins can update any profile') THEN
+        CREATE POLICY "Admins can update any profile" ON profiles FOR UPDATE USING (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+    
+    -- Check and add Event participants policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'event_participants' AND policyname = 'Admins can manage all participants') THEN
+        CREATE POLICY "Admins can manage all participants" ON event_participants FOR ALL USING (
+            EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+        );
+    END IF;
+END $$;
 
 -- Notify completion
 SELECT 'Migration completed successfully! All missing columns and triggers have been added.' as status; 
