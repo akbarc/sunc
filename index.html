@@ -694,6 +694,304 @@
             font-weight: 700;
         }
 
+        .admin-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .admin-nav-button {
+            background: none;
+            border: 1px solid #333333;
+            color: #666666;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav-button.active,
+        .admin-nav-button:hover {
+            background: #0066ff;
+            color: #ffffff;
+            border-color: #0066ff;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666666;
+            font-weight: 500;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-actions .action-button {
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-actions .action-button:hover {
+            background: #0052cc;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .filter-controls select,
+        .search-controls input {
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Applications List */
+        .applications-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .application-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .application-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .application-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .application-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .application-status.pending {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+
+        .application-status.approved {
+            background: rgba(0, 204, 102, 0.2);
+            color: #00cc66;
+        }
+
+        .application-status.denied {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        .application-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .application-detail {
+            color: #cccccc;
+        }
+
+        .application-detail strong {
+            color: #ffffff;
+        }
+
+        .application-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .review-button {
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .review-button:hover {
+            background: #0052cc;
+        }
+
+        /* Members List */
+        .members-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .member-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .member-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .member-details h3 {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .member-details p {
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .ban-button {
+            background: #ff4444;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ban-button:hover {
+            background: #cc3333;
+        }
+
+        /* Events List */
+        .events-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .event-management-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .event-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .event-management-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .event-management-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-management-detail {
+            color: #cccccc;
+        }
+
+        .event-management-detail strong {
+            color: #ffffff;
+        }
+
+        .event-management-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
         .add-event-button {
             display: flex;
             align-items: center;
@@ -712,46 +1010,66 @@
             background: #0052cc;
         }
 
-        .events-table {
-            background: #111111;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #333333;
+        /* Modal Styles */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .table-header {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            background: #000000;
-            border-bottom: 1px solid #333333;
+        .modal-header h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
             font-weight: 600;
         }
 
-        .table-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+        .review-actions {
+            display: flex;
             gap: 1rem;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #333333;
-            align-items: center;
+            margin-top: 1.5rem;
         }
 
-        .table-row:hover {
-            background: rgba(255, 255, 255, 0.02);
+        .approve-button {
+            background: #00cc66;
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .capacity-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            background: rgba(0, 204, 102, 0.2);
-            color: #00cc66;
+        .approve-button:hover {
+            background: #00aa55;
+        }
+
+        .deny-button {
+            background: #ff4444;
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .deny-button:hover {
+            background: #cc3333;
+        }
+
+        #review-notes {
+            width: 100%;
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
         }
 
         .action-button {
@@ -1065,7 +1383,7 @@
                     <h2 class="profile-title">Creator Profile</h2>
                     
                     <div class="profile-section">
-                        <div class="profile-label">Follower Count</div>
+                        <div class="profile-label">Instagram Followers</div>
                         <div class="profile-value">24.5K</div>
                         <div class="status-badge">✓ Active Creator</div>
                     </div>
@@ -1098,86 +1416,149 @@
         <div class="admin-container">
             <div class="admin-header">
                 <h1 class="admin-title">Admin Console</h1>
-                <button class="add-event-button" onclick="addEvent()">
-                    ➕ Add Event
-                </button>
+                <div class="admin-nav">
+                    <button class="admin-nav-button active" onclick="showAdminSection('dashboard')">Dashboard</button>
+                    <button class="admin-nav-button" onclick="showAdminSection('applications')">Applications</button>
+                    <button class="admin-nav-button" onclick="showAdminSection('members')">Members</button>
+                    <button class="admin-nav-button" onclick="showAdminSection('events')">Events</button>
+                </div>
             </div>
 
-            <div class="events-table">
-                <div class="table-header">
-                    <div>Event</div>
-                    <div>Venue</div>
-                    <div>Date</div>
-                    <div>Capacity</div>
-                    <div>Status</div>
-                    <div>Actions</div>
+            <!-- Admin Dashboard -->
+            <div id="admin-dashboard" class="admin-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-events">0</div>
+                        <div class="stat-label">Total Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-applications">0</div>
+                        <div class="stat-label">Pending Applications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-members">0</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="active-events">0</div>
+                        <div class="stat-label">Active Events</div>
+                    </div>
                 </div>
                 
-                <div class="table-row">
-                    <div>
-                        <div style="font-weight: 600;">Craft cocktails & dim sum launch</div>
-                        <div style="color: #666666; font-size: 0.9rem;">19:00</div>
-                    </div>
-                    <div>The Grand</div>
-                    <div>Jan 15, 2024</div>
-                    <div>
-                        <div class="capacity-pill">
-                            👥 7/12
-                        </div>
-                    </div>
-                    <div>
-                        <span style="color: #00cc66; font-weight: 500;">upcoming</span>
-                    </div>
-                    <div>
-                        <button class="action-button" title="View Roster">👁️</button>
-                        <button class="action-button" title="Edit">✏️</button>
-                        <button class="action-button" title="Delete" style="color: #ff4444;">🗑️</button>
-                    </div>
+                <div class="quick-actions">
+                    <button class="action-button" onclick="showAdminSection('applications')">Review Applications</button>
+                    <button class="action-button" onclick="showAdminSection('events')">Manage Events</button>
+                    <button class="action-button" onclick="showAdminSection('members')">View Members</button>
                 </div>
+            </div>
 
-                <div class="table-row">
-                    <div>
-                        <div style="font-weight: 600;">Sunset rooftop networking</div>
-                        <div style="color: #666666; font-size: 0.9rem;">18:30</div>
-                    </div>
-                    <div>Skyline Lounge</div>
-                    <div>Jan 18, 2024</div>
-                    <div>
-                        <div class="capacity-pill" style="background: rgba(255, 68, 68, 0.2); color: #ff4444;">
-                            👥 8/8
-                        </div>
-                    </div>
-                    <div>
-                        <span style="color: #00cc66; font-weight: 500;">upcoming</span>
-                    </div>
-                    <div>
-                        <button class="action-button" title="View Roster">👁️</button>
-                        <button class="action-button" title="Edit">✏️</button>
-                        <button class="action-button" title="Delete" style="color: #ff4444;">🗑️</button>
+            <!-- Applications Management -->
+            <div id="admin-applications" class="admin-section">
+                <div class="section-header">
+                    <h2>Application Review</h2>
+                    <div class="filter-controls">
+                        <select id="application-filter" onchange="filterApplications()">
+                            <option value="all">All Applications</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="denied">Denied</option>
+                        </select>
                     </div>
                 </div>
+                
+                <div class="applications-list" id="applications-list">
+                    <!-- Applications will be loaded here -->
+                </div>
+            </div>
 
-                <div class="table-row">
-                    <div>
-                        <div style="font-weight: 600;">Live jazz & art showcase</div>
-                        <div style="color: #666666; font-size: 0.9rem;">20:00</div>
-                    </div>
-                    <div>Underground</div>
-                    <div>Jan 20, 2024</div>
-                    <div>
-                        <div class="capacity-pill" style="background: rgba(255, 170, 0, 0.2); color: #ffaa00;">
-                            👥 5/15
-                        </div>
-                    </div>
-                    <div>
-                        <span style="color: #00cc66; font-weight: 500;">upcoming</span>
-                    </div>
-                    <div>
-                        <button class="action-button" title="View Roster">👁️</button>
-                        <button class="action-button" title="Edit">✏️</button>
-                        <button class="action-button" title="Delete" style="color: #ff4444;">🗑️</button>
+            <!-- Members Management -->
+            <div id="admin-members" class="admin-section">
+                <div class="section-header">
+                    <h2>Member Management</h2>
+                    <div class="search-controls">
+                        <input type="text" id="member-search" placeholder="Search members..." onkeyup="searchMembers()">
                     </div>
                 </div>
+                
+                <div class="members-list" id="members-list">
+                    <!-- Members will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Events Management -->
+            <div id="admin-events" class="admin-section">
+                <div class="section-header">
+                    <h2>Event Management</h2>
+                    <button class="add-event-button" onclick="openAddEventModal()">+ Add Event</button>
+                </div>
+                
+                <div class="events-list" id="events-list">
+                    <!-- Events will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Event Modal -->
+    <div id="addEventModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Event</h2>
+                <button class="close-button" onclick="closeAddEventModal()">✕</button>
+            </div>
+            
+            <form id="addEventForm" onsubmit="submitNewEvent(event)">
+                <div class="form-group">
+                    <label>Venue Name *</label>
+                    <input type="text" name="venue" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Event Hook *</label>
+                    <input type="text" name="hook" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Date & Time *</label>
+                    <input type="datetime-local" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Capacity *</label>
+                    <input type="number" name="capacity" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Location Address</label>
+                    <input type="text" name="location_address">
+                </div>
+                
+                <button type="submit" class="submit-button">Create Event</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Review Modal -->
+    <div id="applicationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Review Application</h2>
+                <button class="close-button" onclick="closeApplicationModal()">✕</button>
+            </div>
+            
+            <div id="application-details">
+                <!-- Application details will be loaded here -->
+            </div>
+            
+            <div class="review-actions">
+                <button class="approve-button" onclick="approveApplication()">Approve</button>
+                <button class="deny-button" onclick="denyApplication()">Deny</button>
+                <textarea id="review-notes" placeholder="Add review notes (optional)"></textarea>
             </div>
         </div>
     </div>
@@ -1532,6 +1913,12 @@
         // Global variables
         let selectedEvent = null;
         let currentUser = null;
+        let currentAdminSection = 'dashboard';
+
+        // Initialize Supabase client
+        const supabaseUrl = 'https://vdwarnobmgkljagpvttv.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // Page navigation
         function showPage(pageId) {
@@ -1604,15 +1991,36 @@
             showToast('Password reset email sent!', 'success');
         }
 
-        function handleNewsletterSignup(event) {
+        async function handleNewsletterSignup(event) {
             event.preventDefault();
             const email = event.target.querySelector('input[type="email"]').value;
-            showToast('Thanks for submitting!', 'success');
-            event.target.reset();
+            
+            try {
+                const response = await fetch('https://vdwarnobmgkljagpvttv.supabase.co/rest/v1/newsletter_subscribers', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to subscribe');
+                }
+                
+                showToast('Thanks for subscribing!', 'success');
+                event.target.reset();
+            } catch (error) {
+                console.error('Error subscribing:', error);
+                showToast('Failed to subscribe. Please try again.', 'error');
+            }
         }
 
         // Application functions
-        function submitApplication(event) {
+        async function submitApplication(event) {
             event.preventDefault();
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData);
@@ -1626,8 +2034,38 @@
                 return;
             }
             
-            showToast('Application submitted successfully!', 'success');
-            showPage('success');
+            try {
+                // Submit to Supabase
+                const response = await fetch('https://vdwarnobmgkljagpvttv.supabase.co/rest/v1/applications', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        full_name: data.fullName,
+                        email: data.email,
+                        phone: data.phone,
+                        instagram: data.instagram,
+                        follower_count: parseInt(data.followerCount.replace(/[^0-9]/g, '')),
+                        content_category: data.contentCategory,
+                        city: data.city,
+                        motivation: data.motivation
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to submit application');
+                }
+                
+                showToast('Application submitted successfully!', 'success');
+                showPage('success');
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                showToast('Failed to submit application. Please try again.', 'error');
+            }
         }
 
         // Join event functions
@@ -1711,6 +2149,50 @@
             }
         }
 
+        // Admin Section Navigation
+        function showAdminSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.admin-nav-button').forEach(el => el.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(`admin-${section}`).classList.add('active');
+            document.querySelector(`[onclick="showAdminSection('${section}')"]`).classList.add('active');
+            
+            currentAdminSection = section;
+            loadSectionData(section);
+        }
+
+        // Load section data
+        async function loadSectionData(section) {
+            try {
+                switch(section) {
+                    case 'dashboard':
+                        await loadDashboardStats();
+                        break;
+                    case 'applications':
+                        await loadApplications();
+                        break;
+                    case 'members':
+                        await loadMembers();
+                        break;
+                    case 'events':
+                        await loadEvents();
+                        break;
+                }
+            } catch (error) {
+                console.error('Error loading section data:', error);
+                showToast('Failed to load data. Please try again.', 'error');
+            }
+        }
+
+        // Initialize admin console
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#admin') {
+                showAdminSection('dashboard');
+            }
+        });
+
         // Initialize application
         document.addEventListener('DOMContentLoaded', function() {
             // Add event listeners for guidelines checkbox
@@ -1738,22 +2220,6 @@
                 }
             });
 
-            // Add click handlers for admin buttons
-            document.querySelectorAll('.action-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const action = this.title;
-                    const eventId = this.closest('.table-row').dataset.eventId || '1';
-                    
-                    if (action === 'View Roster') {
-                        viewRoster(eventId);
-                    } else if (action === 'Edit') {
-                        editEvent(eventId);
-                    } else if (action === 'Delete') {
-                        deleteEvent(eventId);
-                    }
-                });
-            });
-
             // Add data attributes to event cards
             document.querySelectorAll('.event-card').forEach((card, index) => {
                 card.dataset.eventId = (index + 1).toString();
@@ -1764,6 +2230,510 @@
                 row.dataset.eventId = (index + 1).toString();
             });
         });
+
+        // Dashboard Functions
+        async function loadDashboardStats() {
+            try {
+                const [
+                    { count: totalEvents },
+                    { count: totalApplications },
+                    { count: totalMembers },
+                    { count: pendingApplications }
+                ] = await Promise.all([
+                    supabase.from('events').select('*', { count: 'exact', head: true }),
+                    supabase.from('applications').select('*', { count: 'exact', head: true }),
+                    supabase.from('profiles').select('*', { count: 'exact', head: true }),
+                    supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'pending')
+                ]);
+
+                document.getElementById('total-events').textContent = totalEvents;
+                document.getElementById('total-members').textContent = totalMembers;
+                document.getElementById('pending-applications').textContent = pendingApplications;
+                document.getElementById('active-events').textContent = totalEvents;
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+                showToast('Failed to load dashboard stats', 'error');
+            }
+        }
+
+        // Applications Functions
+        async function loadApplications() {
+            try {
+                const { data: applications, error } = await supabase
+                    .from('applications')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const applicationsList = document.getElementById('applications-list');
+                applicationsList.innerHTML = applications.map(app => `
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div class="application-name">${app.full_name}</div>
+                            <div class="application-status ${app.status}">${app.status}</div>
+                        </div>
+                        <div class="application-details">
+                            <div class="application-detail">
+                                <strong>Email:</strong> ${app.email}
+                            </div>
+                            <div class="application-detail">
+                                <strong>Instagram:</strong> ${app.instagram}
+                            </div>
+                            <div class="application-detail">
+                                <strong>Followers:</strong> ${app.follower_count}
+                            </div>
+                            <div class="application-detail">
+                                <strong>Category:</strong> ${app.content_category}
+                            </div>
+                            <div class="application-detail">
+                                <strong>City:</strong> ${app.city}
+                            </div>
+                        </div>
+                        <div class="application-actions">
+                            <button class="review-button" onclick="openApplicationModal(${app.id})">Review</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading applications:', error);
+                showToast('Failed to load applications', 'error');
+            }
+        }
+
+        async function filterApplications() {
+            const status = document.getElementById('application-filter').value;
+            try {
+                const query = supabase.from('applications').select('*');
+                if (status !== 'all') {
+                    query.eq('status', status);
+                }
+                const { data: applications, error } = await query.order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const applicationsList = document.getElementById('applications-list');
+                applicationsList.innerHTML = applications.map(app => `
+                    <div class="application-card">
+                        <div class="application-header">
+                            <div class="application-name">${app.full_name}</div>
+                            <div class="application-status ${app.status}">${app.status}</div>
+                        </div>
+                        <div class="application-details">
+                            <div class="application-detail">
+                                <strong>Email:</strong> ${app.email}
+                            </div>
+                            <div class="application-detail">
+                                <strong>Instagram:</strong> ${app.instagram}
+                            </div>
+                            <div class="application-detail">
+                                <strong>Followers:</strong> ${app.follower_count}
+                            </div>
+                            <div class="application-detail">
+                                <strong>Category:</strong> ${app.content_category}
+                            </div>
+                            <div class="application-detail">
+                                <strong>City:</strong> ${app.city}
+                            </div>
+                        </div>
+                        <div class="application-actions">
+                            <button class="review-button" onclick="openApplicationModal(${app.id})">Review</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error filtering applications:', error);
+                showToast('Failed to filter applications', 'error');
+            }
+        }
+
+        // Application Review Modal Functions
+        let currentApplicationId = null;
+
+        async function openApplicationModal(applicationId) {
+            currentApplicationId = applicationId;
+            const modal = document.getElementById('applicationModal');
+            
+            try {
+                const { data: application, error } = await supabase
+                    .from('applications')
+                    .select('*')
+                    .eq('id', applicationId)
+                    .single();
+
+                if (error) throw error;
+
+                const applicationDetails = document.getElementById('application-details');
+                applicationDetails.innerHTML = `
+                    <div class="application-details">
+                        <div class="application-detail">
+                            <strong>Name:</strong> ${application.full_name}
+                        </div>
+                        <div class="application-detail">
+                            <strong>Email:</strong> ${application.email}
+                        </div>
+                        <div class="application-detail">
+                            <strong>Instagram:</strong> ${application.instagram}
+                        </div>
+                        <div class="application-detail">
+                            <strong>Followers:</strong> ${application.follower_count}
+                        </div>
+                        <div class="application-detail">
+                            <strong>Category:</strong> ${application.content_category}
+                        </div>
+                        <div class="application-detail">
+                            <strong>City:</strong> ${application.city}
+                        </div>
+                        <div class="application-detail">
+                            <strong>Motivation:</strong><br>${application.motivation}
+                        </div>
+                    </div>
+                `;
+
+                modal.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading application details:', error);
+                showToast('Failed to load application details', 'error');
+            }
+        }
+
+        function closeApplicationModal() {
+            document.getElementById('applicationModal').style.display = 'none';
+            document.getElementById('review-notes').value = '';
+            currentApplicationId = null;
+        }
+
+        async function approveApplication() {
+            if (!currentApplicationId) return;
+            
+            try {
+                const reviewNotes = document.getElementById('review-notes').value;
+                const { error } = await supabase
+                    .from('applications')
+                    .update({
+                        status: 'approved',
+                        review_notes: reviewNotes,
+                        reviewed_at: new Date().toISOString()
+                    })
+                    .eq('id', currentApplicationId);
+
+                if (error) throw error;
+
+                showToast('Application approved successfully', 'success');
+                closeApplicationModal();
+                loadApplications();
+            } catch (error) {
+                console.error('Error approving application:', error);
+                showToast('Failed to approve application', 'error');
+            }
+        }
+
+        async function denyApplication() {
+            if (!currentApplicationId) return;
+            
+            try {
+                const reviewNotes = document.getElementById('review-notes').value;
+                const { error } = await supabase
+                    .from('applications')
+                    .update({
+                        status: 'denied',
+                        review_notes: reviewNotes,
+                        reviewed_at: new Date().toISOString()
+                    })
+                    .eq('id', currentApplicationId);
+
+                if (error) throw error;
+
+                showToast('Application denied successfully', 'success');
+                closeApplicationModal();
+                loadApplications();
+            } catch (error) {
+                console.error('Error denying application:', error);
+                showToast('Failed to deny application', 'error');
+            }
+        }
+
+        // Members Functions
+        async function loadMembers() {
+            try {
+                const { data: members, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const membersList = document.getElementById('members-list');
+                membersList.innerHTML = members.map(member => `
+                    <div class="member-card">
+                        <div class="member-info">
+                            <div class="member-avatar">${member.full_name.charAt(0)}</div>
+                            <div class="member-details">
+                                <h3>${member.full_name}</h3>
+                                <p>${member.instagram_handle} • ${member.city}</p>
+                            </div>
+                        </div>
+                        <div class="member-actions">
+                            <button class="action-button" onclick="viewMemberProfile(${member.id})">View Profile</button>
+                            ${member.is_banned ? 
+                                `<button class="ban-button" onclick="toggleBan('${member.id}', false)">Unban</button>` :
+                                `<button class="ban-button" onclick="toggleBan('${member.id}', true)">Ban</button>`
+                            }
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading members:', error);
+                showToast('Failed to load members', 'error');
+            }
+        }
+
+        async function searchMembers() {
+            const searchTerm = document.getElementById('member-search').value.toLowerCase();
+            try {
+                const { data: members, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .or(`full_name.ilike.%${searchTerm}%,instagram_handle.ilike.%${searchTerm}%,city.ilike.%${searchTerm}%`)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const membersList = document.getElementById('members-list');
+                membersList.innerHTML = members.map(member => `
+                    <div class="member-card">
+                        <div class="member-info">
+                            <div class="member-avatar">${member.full_name.charAt(0)}</div>
+                            <div class="member-details">
+                                <h3>${member.full_name}</h3>
+                                <p>${member.instagram_handle} • ${member.city}</p>
+                            </div>
+                        </div>
+                        <div class="member-actions">
+                            <button class="action-button" onclick="viewMemberProfile(${member.id})">View Profile</button>
+                            ${member.is_banned ? 
+                                `<button class="ban-button" onclick="toggleBan('${member.id}', false)">Unban</button>` :
+                                `<button class="ban-button" onclick="toggleBan('${member.id}', true)">Ban</button>`
+                            }
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error searching members:', error);
+                showToast('Failed to search members', 'error');
+            }
+        }
+
+        async function toggleBan(userId, isBanned) {
+            try {
+                const { error } = await supabase
+                    .from('profiles')
+                    .update({ is_banned: isBanned })
+                    .eq('id', userId);
+
+                if (error) throw error;
+
+                showToast(`User ${isBanned ? 'banned' : 'unbanned'} successfully`, 'success');
+                loadMembers();
+            } catch (error) {
+                console.error('Error toggling ban status:', error);
+                showToast('Failed to update ban status', 'error');
+            }
+        }
+
+        // Events Functions
+        async function loadEvents() {
+            try {
+                const { data: events, error } = await supabase
+                    .from('events')
+                    .select('*')
+                    .order('date', { ascending: true });
+
+                if (error) throw error;
+
+                const eventsList = document.getElementById('events-list');
+                eventsList.innerHTML = events.map(event => `
+                    <div class="event-management-card">
+                        <div class="event-management-header">
+                            <div class="event-management-title">${event.venue}</div>
+                            <div class="event-management-actions">
+                                <button class="action-button" onclick="viewEventParticipants(${event.id})">View Roster</button>
+                                <button class="action-button" onclick="editEvent(${event.id})">Edit</button>
+                                <button class="action-button" onclick="deleteEvent(${event.id})">Delete</button>
+                            </div>
+                        </div>
+                        <div class="event-management-details">
+                            <div class="event-management-detail">
+                                <strong>Hook:</strong> ${event.hook}
+                            </div>
+                            <div class="event-management-detail">
+                                <strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}
+                            </div>
+                            <div class="event-management-detail">
+                                <strong>Capacity:</strong> ${event.current_participants}/${event.capacity}
+                            </div>
+                            <div class="event-management-detail">
+                                <strong>Status:</strong> ${event.status}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading events:', error);
+                showToast('Failed to load events', 'error');
+            }
+        }
+
+        // Event Modal Functions
+        function openAddEventModal() {
+            document.getElementById('addEventModal').style.display = 'block';
+        }
+
+        function closeAddEventModal() {
+            document.getElementById('addEventModal').style.display = 'none';
+        }
+
+        async function submitNewEvent(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const eventData = Object.fromEntries(formData);
+            
+            try {
+                const { data, error } = await supabase
+                    .from('events')
+                    .insert([{
+                        venue: eventData.venue,
+                        hook: eventData.hook,
+                        date: eventData.date,
+                        capacity: parseInt(eventData.capacity),
+                        description: eventData.description,
+                        location_address: eventData.location_address,
+                        status: 'active'
+                    }])
+                    .select();
+
+                if (error) throw error;
+
+                showToast('Event created successfully', 'success');
+                closeAddEventModal();
+                loadEvents();
+            } catch (error) {
+                console.error('Error creating event:', error);
+                showToast('Failed to create event', 'error');
+            }
+        }
+
+        // Event Participant Management
+        async function viewEventParticipants(eventId) {
+            try {
+                const { data: participants, error } = await supabase
+                    .rpc('get_event_participants', { event_id_param: eventId });
+
+                if (error) throw error;
+
+                const modal = document.getElementById('eventParticipantsModal');
+                const participantsList = document.getElementById('event-participants-list');
+                
+                participantsList.innerHTML = participants.map(participant => `
+                    <div class="participant-card">
+                        <div class="participant-info">
+                            <div class="participant-avatar">${participant.full_name.charAt(0)}</div>
+                            <div class="participant-details">
+                                <h3>${participant.full_name}</h3>
+                                <p>${participant.instagram_handle}</p>
+                            </div>
+                        </div>
+                        <div class="participant-status">
+                            <span class="status-badge ${participant.status}">${participant.status}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                modal.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading event participants:', error);
+                showToast('Failed to load event participants', 'error');
+            }
+        }
+
+        async function editEvent(eventId) {
+            try {
+                const { data: event, error } = await supabase
+                    .from('events')
+                    .select('*')
+                    .eq('id', eventId)
+                    .single();
+
+                if (error) throw error;
+
+                // Populate edit form
+                const form = document.getElementById('editEventForm');
+                form.elements['venue'].value = event.venue;
+                form.elements['hook'].value = event.hook;
+                form.elements['date'].value = event.date.split('T')[0];
+                form.elements['capacity'].value = event.capacity;
+                form.elements['description'].value = event.description;
+                form.elements['location_address'].value = event.location_address;
+                form.elements['status'].value = event.status;
+
+                // Show edit modal
+                document.getElementById('editEventModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading event details:', error);
+                showToast('Failed to load event details', 'error');
+            }
+        }
+
+        async function updateEvent(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const eventData = Object.fromEntries(formData);
+            
+            try {
+                const { error } = await supabase
+                    .from('events')
+                    .update({
+                        venue: eventData.venue,
+                        hook: eventData.hook,
+                        date: eventData.date,
+                        capacity: parseInt(eventData.capacity),
+                        description: eventData.description,
+                        location_address: eventData.location_address,
+                        status: eventData.status
+                    })
+                    .eq('id', eventData.id);
+
+                if (error) throw error;
+
+                showToast('Event updated successfully', 'success');
+                document.getElementById('editEventModal').style.display = 'none';
+                loadEvents();
+            } catch (error) {
+                console.error('Error updating event:', error);
+                showToast('Failed to update event', 'error');
+            }
+        }
+
+        async function deleteEvent(eventId) {
+            if (!confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('events')
+                    .delete()
+                    .eq('id', eventId);
+
+                if (error) throw error;
+
+                showToast('Event deleted successfully', 'success');
+                loadEvents();
+            } catch (error) {
+                console.error('Error deleting event:', error);
+                showToast('Failed to delete event', 'error');
+            }
+        }
     </script>
 </body>
 </html> 
