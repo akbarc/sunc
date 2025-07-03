@@ -3378,14 +3378,20 @@
                 console.log('✅ User has admin privileges, proceeding with approval...');
                 
                 const reviewNotes = document.getElementById('review-notes').value;
+                const updateData = {
+                    status: 'approved',
+                    reviewed_at: new Date().toISOString(),
+                    reviewed_by: user.id
+                };
+                
+                // Only add review_notes if the column exists (will be added by migration)
+                if (reviewNotes) {
+                    updateData.review_notes = reviewNotes;
+                }
+                
                 const { error } = await supabaseClient
                     .from('applications')
-                    .update({
-                        status: 'approved',
-                        review_notes: reviewNotes,
-                        reviewed_at: new Date().toISOString(),
-                        reviewed_by: user.id
-                    })
+                    .update(updateData)
                     .eq('id', currentApplicationId);
 
                 if (error) {
@@ -3464,14 +3470,20 @@
                 console.log('✅ User has admin privileges, proceeding with denial...');
                 
                 const reviewNotes = document.getElementById('review-notes').value;
+                const updateData = {
+                    status: 'denied',
+                    reviewed_at: new Date().toISOString(),
+                    reviewed_by: user.id
+                };
+                
+                // Only add review_notes if the column exists (will be added by migration)
+                if (reviewNotes) {
+                    updateData.review_notes = reviewNotes;
+                }
+                
                 const { error } = await supabaseClient
                     .from('applications')
-                    .update({
-                        status: 'denied',
-                        review_notes: reviewNotes,
-                        reviewed_at: new Date().toISOString(),
-                        reviewed_by: user.id
-                    })
+                    .update(updateData)
                     .eq('id', currentApplicationId);
 
                 if (error) {
