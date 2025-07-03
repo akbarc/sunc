@@ -3777,37 +3777,55 @@
             try {
                 console.log('👥 Loading participants for event:', eventId);
                 
-                const { data: participants, error } = await supabaseClient
+                // First get the participants
+                const { data: participants, error: participantsError } = await supabaseClient
                     .from('event_participants')
-                    .select(`
-                        *,
-                        profiles:user_id (
-                            full_name,
-                            instagram_handle,
-                            avatar_url
-                        )
-                    `)
+                    .select('*')
                     .eq('event_id', eventId);
 
-                if (error) {
-                    console.error('❌ Error loading participants:', error);
-                    throw error;
+                if (participantsError) {
+                    console.error('❌ Error loading participants:', participantsError);
+                    throw participantsError;
                 }
 
                 console.log('✅ Participants loaded:', participants);
 
+                // Then get the user profiles for each participant
+                let participantsWithProfiles = [];
+                if (participants.length > 0) {
+                    const userIds = participants.map(p => p.user_id);
+                    const { data: profiles, error: profilesError } = await supabaseClient
+                        .from('profiles')
+                        .select('id, full_name, instagram_handle, avatar_url')
+                        .in('id', userIds);
+
+                    if (profilesError) {
+                        console.error('❌ Error loading profiles:', profilesError);
+                        throw profilesError;
+                    }
+
+                    // Combine participants with their profiles
+                    participantsWithProfiles = participants.map(participant => {
+                        const profile = profiles.find(p => p.id === participant.user_id);
+                        return {
+                            ...participant,
+                            profile: profile || {}
+                        };
+                    });
+                }
+
                 const modal = document.getElementById('eventParticipantsModal');
                 const participantsList = document.getElementById('event-participants-list');
                 
-                if (participants.length === 0) {
+                if (participantsWithProfiles.length === 0) {
                     participantsList.innerHTML = `
                         <div style="text-align: center; padding: 2rem; color: #666666;">
                             <p>No participants have joined this event yet.</p>
                         </div>
                     `;
                 } else {
-                    participantsList.innerHTML = participants.map(participant => {
-                        const profile = participant.profiles;
+                    participantsList.innerHTML = participantsWithProfiles.map(participant => {
+                        const profile = participant.profile;
                         const name = profile?.full_name || 'Unknown User';
                         const handle = profile?.instagram_handle || 'No handle';
                         
