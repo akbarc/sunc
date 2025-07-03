@@ -2418,8 +2418,14 @@
             </button>
             
             <div class="signup-prompt">
-                Don't have an account? 
-                <button type="button" class="signup-link" onclick="showPage('apply')">Apply to join</button>
+                <div style="margin-bottom: 1rem;">
+                    Already approved but don't have an account? 
+                    <button type="button" class="signup-link" onclick="switchToCreateAccount()">Create Account</button>
+                </div>
+                <div>
+                    Don't have an account? 
+                    <button type="button" class="signup-link" onclick="showPage('apply')">Apply to join</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2547,6 +2553,26 @@
             document.getElementById('authForm').reset();
         }
 
+        async function switchToCreateAccount() {
+            const email = document.getElementById('authEmail').value.trim().toLowerCase();
+            
+            if (!email) {
+                showAuthMessage('Please enter your email first', 'error');
+                return;
+            }
+            
+            // Check if they have an approved application
+            const application = await checkApprovedApplication(email);
+            
+            if (!application) {
+                showAuthMessage('Email not found in approved applications. Please apply first.', 'error');
+                return;
+            }
+            
+            // Switch to create account mode
+            await promptPasswordSetup(email, application);
+        }
+
         function showAuthMessage(message, type = 'info') {
             const messageDiv = document.getElementById('authMessage');
             const messageText = document.getElementById('authMessageText');
@@ -2617,24 +2643,31 @@
                     // Create the user account
                     await createUserAccount(email, password, approvedApplication);
                 } else {
-                    // Check if email exists in approved applications
-                    const application = await checkApprovedApplication(email);
-                    
-                    if (!application) {
-                        showAuthMessage('Email not found. Please apply first or contact support.', 'error');
-                        return;
-                    }
-                    
-                    // Try to sign in with existing account
+                    // Try to sign in first
                     try {
                         await signInUser(email, password);
                     } catch (signInError) {
-                        // If sign in fails, this might be their first time - offer to create account
-                        if (signInError.message.includes('Invalid login credentials') || 
-                            signInError.message.includes('Email not confirmed')) {
-                            await promptPasswordSetup(email, application);
+                        console.log('❌ Sign in failed:', signInError.message);
+                        
+                        // If sign in fails, check if they have an approved application
+                        const application = await checkApprovedApplication(email);
+                        
+                        if (!application) {
+                            showAuthMessage('Email not found or not approved. Please apply first or contact support.', 'error');
                             return;
                         }
+                        
+                        // If they have an approved application but sign-in failed, offer to create account
+                        if (signInError.message.includes('Invalid login credentials') || 
+                            signInError.message.includes('Email not confirmed') ||
+                            signInError.message.includes('Invalid email or password')) {
+                            showAuthMessage(`Welcome back ${application.full_name}! It looks like you haven't created your account yet. Let's set up your password.`, 'info');
+                            setTimeout(() => {
+                                promptPasswordSetup(email, application);
+                            }, 2000);
+                            return;
+                        }
+                        
                         throw signInError;
                     }
                 }
@@ -2890,13 +2923,20 @@
 
         function updateUserInterface() {
             // Update UI based on current user state
+            updateSignInButton();
+            updateDashboardHeader();
+        }
+
+        function updateSignInButton() {
             const signInButton = document.querySelector('.sign-in-button');
             if (currentUser) {
-                signInButton.textContent = 'Sign Out';
+                signInButton.textContent = `👋 ${currentUser.name?.split(' ')[0] || 'User'}`;
                 signInButton.onclick = signOutUser;
+                signInButton.style.background = 'var(--gradient-secondary)';
             } else {
                 signInButton.textContent = 'Sign In';
                 signInButton.onclick = openAuthModal;
+                signInButton.style.background = 'var(--gradient-primary)';
             }
         }
 
@@ -3330,8 +3370,50 @@
             }
         }
 
+        // Check for existing authentication session
+        async function checkAuthSession() {
+            try {
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                
+                if (error) {
+                    console.log('❌ Auth check error:', error);
+                    return;
+                }
+                
+                if (user) {
+                    console.log('✅ Existing session found:', user.email);
+                    
+                    // Get user profile
+                    const profile = await getUserProfile(user.id);
+                    
+                    currentUser = {
+                        id: user.id,
+                        email: user.email,
+                        name: profile.full_name || user.user_metadata?.full_name,
+                        instagram: profile.instagram_handle,
+                        profile: profile
+                    };
+                    
+                    console.log('👤 Current user restored:', currentUser);
+                    updateUserInterface();
+                    
+                    // If on landing page and user is signed in, show dashboard
+                    if (window.location.hash === '' || window.location.hash === '#landing') {
+                        showPage('dashboard');
+                    }
+                } else {
+                    console.log('📤 No existing session');
+                }
+            } catch (error) {
+                console.error('❌ Error checking auth session:', error);
+            }
+        }
+
         // Initialize application
         document.addEventListener('DOMContentLoaded', async function() {
+            // Check for existing auth session first
+            await checkAuthSession();
+            
             // Create admin application automatically
             await createAdminApplicationOnLoad();
             
