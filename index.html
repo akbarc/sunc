@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Unlocked - Creators fuel culture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+            margin-left: 0.5rem;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sign-in-button {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .sign-in-button:hover {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        /* Landing Page */
+        .hero-section {
+            background: #000;
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-transform: lowercase;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+            text-transform: lowercase;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            opacity: 0.8;
+            text-transform: lowercase;
+        }
+
+        .hero-image {
+            margin-top: 40px;
+        }
+
+        .nyc-skyline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        .propose-section {
+            padding: 100px 20px;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 60px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .propose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .propose-card {
+            text-align: center;
+        }
+
+        .propose-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .propose-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .propose-description {
+            color: #666;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .why-works-section {
+            padding: 100px 20px;
+            background: #f8f9fa;
+        }
+
+        .why-works-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .why-works-icon {
+            font-size: 3rem;
+            margin-bottom: 30px;
+        }
+
+        .why-works-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .why-works-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .join-section {
+            padding: 100px 20px;
+            background: white;
+            text-align: center;
+        }
+
+        .join-title {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #333;
+            text-transform: lowercase;
+        }
+
+        .join-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+            color: #666;
+            text-transform: lowercase;
+        }
+
+        .join-question {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .join-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .join-button {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .join-button:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        .newsletter-section {
+            padding: 80px 20px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            flex-wrap: wrap;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .newsletter-button {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .newsletter-button:hover {
+            background: #333;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-link {
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .footer {
+            padding: 40px 20px;
+            background: #000;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Application Page */
+        .application-container {
+            min-height: 100vh;
+            background: #000000;
+            padding: 2rem;
+            padding-top: 6rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefits-column {
+            background: #111111;
+            padding: 2rem;
+            border-radius: 12px;
+            height: fit-content;
+        }
+
+        .benefits-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0066ff;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 102, 255, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #0066ff;
+        }
+
+        .form-column {
+            background: #111111;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .submit-button {
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background: #0052cc;
+        }
+
+        /* Dashboard */
+        .dashboard-container {
+            min-height: 100vh;
+            background: #000000;
+            padding-top: 5rem;
+        }
+
+        .dashboard-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333333;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: #111111;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            border: 1px solid #333333;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .event-image {
+            height: 200px;
+            background: linear-gradient(45deg, #333333, #666666);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .venue-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-hook {
+            color: #cccccc;
+            margin-bottom: 1rem;
+        }
+
+        .capacity-meter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .capacity-text {
+            font-size: 0.9rem;
+            color: #666666;
+        }
+
+        .capacity-bar {
+            width: 100px;
+            height: 6px;
+            background: #333333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .capacity-fill {
+            height: 100%;
+            background: #00cc66;
+            width: 60%;
+            transition: width 0.3s ease;
+        }
+
+        .event-button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #0066ff;
+            color: #ffffff;
+        }
+
+        .event-button:hover {
+            background: #0052cc;
+        }
+
+        .profile-panel {
+            background: #111111;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            border: 1px solid #333333;
+        }
+
+        .profile-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+
+        .profile-label {
+            font-size: 0.9rem;
+            color: #666666;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-value {
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            background: rgba(0, 204, 102, 0.2);
+            color: #00cc66;
+        }
+
+        /* Success Page */
+        .success-container {
+            min-height: 100vh;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-card {
+            background: #111111;
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #00cc66;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: #ffffff;
+            font-size: 2rem;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #00cc66;
+        }
+
+        .success-message {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        /* Admin Console */
+        .admin-container {
+            min-height: 100vh;
+            background: #000000;
+            padding: 2rem;
+            padding-top: 6rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333333;
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .add-event-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-event-button:hover {
+            background: #0052cc;
+        }
+
+        .events-table {
+            background: #111111;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333333;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: #000000;
+            border-bottom: 1px solid #333333;
+            font-weight: 600;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #333333;
+            align-items: center;
+        }
+
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .capacity-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: rgba(0, 204, 102, 0.2);
+            color: #00cc66;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            color: #666666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            margin-left: 0.5rem;
+        }
+
+        .action-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="header">
+        <div class="logo">Society Unlocked</div>
+        <div>
+            <button class="nav-button" onclick="showPage('landing')">Home</button>
+            <button class="nav-button" onclick="showPage('apply')">Apply</button>
+            <button class="nav-button" onclick="showPage('dashboard')">Dashboard</button>
+            <button class="nav-button" onclick="showPage('admin')">Admin</button>
+            <a href="#" class="sign-in-button" onclick="openAuthModal()">Sign In</a>
+        </div>
+    </div>
+
+    <!-- Landing Page -->
+    <div id="landing" class="page active">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="logo-container">
+                    <div class="logo-icon">🔓</div>
+                    <h1 class="hero-title">society unlocked.</h1>
+                </div>
+                <p class="hero-subtitle">your key to unlocking New York City</p>
+                <p class="hero-description">a gateway that connects the city's most exciting venues with authentic & engaging locals to deliver real results</p>
+                <div class="hero-image">
+                    <div class="nyc-skyline">NYC Skyline BW</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- What We Propose Section -->
+        <div class="propose-section">
+            <h2 class="section-title">WHAT WE PROPOSE</h2>
+            <div class="propose-grid">
+                <div class="propose-card">
+                    <div class="propose-number">1</div>
+                    <h3 class="propose-title">Join the Society</h3>
+                    <p class="propose-description">Whether you're a venue looking to elevate your presence or an NYC local ready to take your influence to new heights, apply to join our exclusive community.</p>
+                </div>
+                <div class="propose-card">
+                    <div class="propose-number">2</div>
+                    <h3 class="propose-title">Unlock Opportunities</h3>
+                    <p class="propose-description">We'll analyze your brand and value proposition to connect our exclusive venues with the right micro-influencers to join forces.</p>
+                </div>
+                <div class="propose-card">
+                    <div class="propose-number">3</div>
+                    <h3 class="propose-title">Socialize & Share</h3>
+                    <p class="propose-description">Micro-influencers will create authentic, user-generated content for their venues that resonate with its target audience, increasing brand awareness and unlocking your potential.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why It Works Section -->
+        <div class="why-works-section">
+            <div class="why-works-content">
+                <div class="why-works-icon">🎸</div>
+                <h3 class="why-works-title">The future of UGC is now.</h3>
+                <p class="why-works-text">Long gone are the days of celebrity promotions and paid partnerships. Consumers crave authenticity.</p>
+                <p class="why-works-text">Exclusive partnerships between micro-influencers and venues in the hospitality industry will unlock the power of authentic, localized influence to elevate a venue's presence in the city and enhance brand visibility.</p>
+                <p class="why-works-text">Micro-influencers connect with their audiences and use user-generated content to provide compelling social proof that will increase bookings and customer engagement.</p>
+            </div>
+        </div>
+
+        <!-- Join the Society Section -->
+        <div class="join-section">
+            <h2 class="join-title">Join the society.</h2>
+            <p class="join-subtitle">anyone can apply, but not everyone can join...</p>
+            <div class="join-options">
+                <h3 class="join-question">Who are you?</h3>
+                <div class="join-buttons">
+                    <button class="join-button venue" onclick="showPage('apply')">VENUE</button>
+                    <button class="join-button influencer" onclick="showPage('apply')">MICRO-INFLUENCER</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="newsletter-section">
+            <h3 class="newsletter-title">Interested? Be in the know:</h3>
+            <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+                <input type="email" class="newsletter-input" placeholder="Enter your email here" required>
+                <button type="submit" class="newsletter-button">Sign Up</button>
+            </form>
+            <div class="social-links">
+                <a href="https://instagram.com/societyunlocked" class="social-link">📷</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">HOME</a>
+                    <a href="#" class="footer-link">VENUE</a>
+                    <a href="#" class="footer-link">MICRO-INFLUENCER</a>
+                    <a href="#" class="footer-link">PRESS</a>
+                    <a href="#" class="footer-link">CONTACT</a>
+                </div>
+                <div class="footer-copyright">
+                    © 2024 By Society Unlocked.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Page -->
+    <div id="apply" class="page">
+        <div class="application-container">
+            <div class="content-grid">
+                <div class="benefits-column">
+                    <h2 class="benefits-title">What You'll Get</h2>
+                    <div class="benefit-item">
+                        <span>🎁</span>
+                        <span>Free meals at exclusive venues</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span>⭐</span>
+                        <span>Priority access to events</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span>👥</span>
+                        <span>Exclusive drops and perks</span>
+                    </div>
+                </div>
+
+                <div class="form-column">
+                    <h2 class="form-title">Creator Profile</h2>
+                    <form onsubmit="submitApplication(event)">
+                        <div class="form-group">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Instagram Handle *</label>
+                            <input type="text" class="form-input" placeholder="@yourhandle" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Follower Count *</label>
+                            <select class="form-select" required>
+                                <option value="">Select your follower count</option>
+                                <option value="1k-5k">1K - 5K</option>
+                                <option value="5k-10k">5K - 10K</option>
+                                <option value="10k-25k">10K - 25K</option>
+                                <option value="25k-50k">25K - 50K</option>
+                                <option value="50k-100k">50K - 100K</option>
+                                <option value="100k+">100K+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Content Category *</label>
+                            <select class="form-select" required>
+                                <option value="">Select your content category</option>
+                                <option value="lifestyle">Lifestyle</option>
+                                <option value="food">Food & Dining</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="travel">Travel</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="business">Business</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City *</label>
+                            <input type="text" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Why do you want to join? *</label>
+                            <textarea class="form-input" rows="4" required placeholder="Tell us about your passion for creating content..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What's your best content piece? *</label>
+                            <input type="url" class="form-input" required placeholder="URL to your best post/video">
+                        </div>
+                        <button type="submit" class="submit-button">Submit Application</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Page -->
+    <div id="success" class="page">
+        <div class="success-container">
+            <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h1 class="success-title">Application Submitted!</h1>
+                <p class="success-message">We're reviewing your profile. You'll hear from us soon.</p>
+                <div style="background: rgba(0, 102, 255, 0.1); border: 1px solid #0066ff; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+                    <h3 style="color: #0066ff; margin-bottom: 0.5rem;">Stay Connected</h3>
+                    <p style="color: #cccccc; font-size: 0.9rem; margin-bottom: 1rem;">Follow @SocietyUnlocked on Instagram while you wait for updates</p>
+                    <a href="https://instagram.com/societyunlocked" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #0066ff; color: #ffffff; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 500;">
+                        📷 Follow @SocietyUnlocked
+                    </a>
+                </div>
+                <button class="cta-button" onclick="showPage('landing')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="page">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div class="logo">Society Unlocked</div>
+                <div>
+                    <button class="nav-button" style="background: #0066ff;">Events</button>
+                    <button class="nav-button">Profile</button>
+                    <div style="width: 40px; height: 40px; background: #0066ff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 600;">JD</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="events-grid">
+                    <div class="event-card">
+                        <div class="event-image">The Grand</div>
+                        <div class="event-content">
+                            <h3 class="venue-name">The Grand</h3>
+                            <p class="event-hook">Craft cocktails & dim sum launch</p>
+                            <div class="capacity-meter">
+                                <span class="capacity-text">7/12 spots left</span>
+                                <div class="capacity-bar">
+                                    <div class="capacity-fill"></div>
+                                </div>
+                            </div>
+                            <button class="event-button">Join</button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-image">Skyline Lounge</div>
+                        <div class="event-content">
+                            <h3 class="venue-name">Skyline Lounge</h3>
+                            <p class="event-hook">Sunset rooftop networking</p>
+                            <div class="capacity-meter">
+                                <span class="capacity-text">8/8 spots left</span>
+                                <div class="capacity-bar">
+                                    <div class="capacity-fill" style="width: 100%; background: #ff4444;"></div>
+                                </div>
+                            </div>
+                            <button class="event-button" style="background: #666666;" disabled>Full</button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-image">Underground</div>
+                        <div class="event-content">
+                            <h3 class="venue-name">Underground</h3>
+                            <p class="event-hook">Live jazz & art showcase</p>
+                            <div class="capacity-meter">
+                                <span class="capacity-text">5/15 spots left</span>
+                                <div class="capacity-bar">
+                                    <div class="capacity-fill" style="width: 33%;"></div>
+                                </div>
+                            </div>
+                            <button class="event-button">Join</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-panel">
+                    <h2 class="profile-title">Creator Profile</h2>
+                    
+                    <div class="profile-section">
+                        <div class="profile-label">Follower Count</div>
+                        <div class="profile-value">24.5K</div>
+                        <div class="status-badge">✓ Active Creator</div>
+                    </div>
+
+                    <div class="profile-section">
+                        <div class="profile-label">Status</div>
+                        <div class="status-badge">⭐ 0 no-shows</div>
+                        <div class="status-badge">👥 12 events attended</div>
+                    </div>
+
+                    <div class="profile-section">
+                        <div class="profile-label">Recent Deliverables</div>
+                        <div style="background: #000000; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #0066ff; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            <strong>The Grand</strong> - Posted 2 days ago
+                        </div>
+                        <div style="background: #000000; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #0066ff; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            <strong>Skyline Lounge</strong> - Posted 1 week ago
+                        </div>
+                        <div style="background: #000000; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #0066ff; font-size: 0.9rem;">
+                            <strong>Underground</strong> - Posted 2 weeks ago
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Console -->
+    <div id="admin" class="page">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1 class="admin-title">Admin Console</h1>
+                <button class="add-event-button" onclick="addEvent()">
+                    ➕ Add Event
+                </button>
+            </div>
+
+            <div class="events-table">
+                <div class="table-header">
+                    <div>Event</div>
+                    <div>Venue</div>
+                    <div>Date</div>
+                    <div>Capacity</div>
+                    <div>Status</div>
+                    <div>Actions</div>
+                </div>
+                
+                <div class="table-row">
+                    <div>
+                        <div style="font-weight: 600;">Craft cocktails & dim sum launch</div>
+                        <div style="color: #666666; font-size: 0.9rem;">19:00</div>
+                    </div>
+                    <div>The Grand</div>
+                    <div>Jan 15, 2024</div>
+                    <div>
+                        <div class="capacity-pill">
+                            👥 7/12
+                        </div>
+                    </div>
+                    <div>
+                        <span style="color: #00cc66; font-weight: 500;">upcoming</span>
+                    </div>
+                    <div>
+                        <button class="action-button" title="View Roster">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button" title="Delete" style="color: #ff4444;">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div>
+                        <div style="font-weight: 600;">Sunset rooftop networking</div>
+                        <div style="color: #666666; font-size: 0.9rem;">18:30</div>
+                    </div>
+                    <div>Skyline Lounge</div>
+                    <div>Jan 18, 2024</div>
+                    <div>
+                        <div class="capacity-pill" style="background: rgba(255, 68, 68, 0.2); color: #ff4444;">
+                            👥 8/8
+                        </div>
+                    </div>
+                    <div>
+                        <span style="color: #00cc66; font-weight: 500;">upcoming</span>
+                    </div>
+                    <div>
+                        <button class="action-button" title="View Roster">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button" title="Delete" style="color: #ff4444;">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div>
+                        <div style="font-weight: 600;">Live jazz & art showcase</div>
+                        <div style="color: #666666; font-size: 0.9rem;">20:00</div>
+                    </div>
+                    <div>Underground</div>
+                    <div>Jan 20, 2024</div>
+                    <div>
+                        <div class="capacity-pill" style="background: rgba(255, 170, 0, 0.2); color: #ffaa00;">
+                            👥 5/15
+                        </div>
+                    </div>
+                    <div>
+                        <span style="color: #00cc66; font-weight: 500;">upcoming</span>
+                    </div>
+                    <div>
+                        <button class="action-button" title="View Roster">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button" title="Delete" style="color: #ff4444;">🗑️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeAuthModal()">✕</button>
+            <h2 class="modal-title">Sign In</h2>
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">📧</div>
+                        <input type="email" class="form-input" id="authEmail" required placeholder="your@email.com">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" class="form-input" id="authPassword" required placeholder="Enter your password">
+                        <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-button">Sign In</button>
+                <button type="button" class="forgot-link" onclick="handleForgotPassword()">Forgot password?</button>
+            </form>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <button class="instagram-button" onclick="handleInstagramLogin()">
+                📷 Log in with Instagram
+            </button>
+            
+            <div class="signup-prompt">
+                Don't have an account? 
+                <button type="button" class="signup-link" onclick="showPage('apply')">Apply to join</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Confirmation Modal -->
+    <div id="joinModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Join Event</h2>
+                <button class="close-button" onclick="closeJoinModal()">✕</button>
+            </div>
+            
+            <div id="joinModalContent">
+                <h3 id="eventVenue" style="margin-bottom: 1rem;"></h3>
+                <p id="eventHook" style="color: #cccccc; margin-bottom: 1.5rem;"></p>
+                
+                <h4 style="margin-bottom: 1rem;">Guidelines</h4>
+                <ul class="guidelines-list">
+                    <li class="guideline-item">Post at least one Instagram story during the event</li>
+                    <li class="guideline-item">Share a Google Review within 48 hours</li>
+                    <li class="guideline-item">Tag @SocietyUnlocked in your content</li>
+                </ul>
+                
+                <div class="penalty-clause">
+                    <strong>Penalty:</strong> No-shows or failure to complete deliverables may result in suspension from future events.
+                </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="guidelinesCheck" class="guidelines-checkbox">
+                    <label for="guidelinesCheck">
+                        I accept the guidelines and understand the penalty clause
+                    </label>
+                </div>
+                
+                <button class="modal-button" onclick="confirmJoin()" disabled id="confirmJoinButton">
+                    Accept & Reserve
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Toast Styles */
+        .toast {
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid #00cc66;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ff4444;
+        }
+
+        .toast.info {
+            border-left: 4px solid #0066ff;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #666666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+            font-size: 1.2rem;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666666;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666666;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: #ffffff;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #333333;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .instagram-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .instagram-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 39, 67, 0.3);
+        }
+
+        .forgot-link {
+            background: none;
+            border: none;
+            color: #0066ff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333333;
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .signup-link {
+            background: none;
+            border: none;
+            color: #0066ff;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Join Modal Specific Styles */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .guidelines-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .guideline-item {
+            padding: 1rem;
+            background: #000000;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 3px solid #0066ff;
+        }
+
+        .penalty-clause {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #ff4444;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .guidelines-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #0066ff;
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 1rem;
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-button:hover:not(:disabled) {
+            background: #0052cc;
+        }
+
+        .modal-button:disabled {
+            background: #666666;
+            cursor: not-allowed;
+        }
+
+        /* Event card states */
+        .event-card.reserved {
+            border-color: #0066ff;
+        }
+
+        .event-card.completed {
+            border-color: #00cc66;
+        }
+    </style>
+
+    <script>
+        // Global variables
+        let selectedEvent = null;
+        let currentUser = null;
+
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Toast notification system
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            const container = document.getElementById('toastContainer');
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, 4000);
+        }
+
+        // Authentication functions
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('authPassword');
+            const toggleButton = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '👁️';
+            }
+        }
+
+        function handleAuthSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            
+            if (email && password) {
+                currentUser = { email, name: 'John Doe' };
+                showToast('Signed in successfully!', 'success');
+                closeAuthModal();
+                showPage('dashboard');
+                updateUserInterface();
+            } else {
+                showToast('Please fill in all fields', 'error');
+            }
+        }
+
+        function handleInstagramLogin() {
+            showToast('Redirecting to Instagram...', 'info');
+        }
+
+        function handleForgotPassword() {
+            showToast('Password reset email sent!', 'success');
+        }
+
+        function handleNewsletterSignup(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            showToast('Thanks for submitting!', 'success');
+            event.target.reset();
+        }
+
+        // Application functions
+        function submitApplication(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Validate required fields
+            const requiredFields = ['fullName', 'email', 'phone', 'instagram', 'followerCount', 'contentCategory', 'city', 'motivation', 'bestContent'];
+            const missingFields = requiredFields.filter(field => !data[field]);
+            
+            if (missingFields.length > 0) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            showToast('Application submitted successfully!', 'success');
+            showPage('success');
+        }
+
+        // Join event functions
+        function openJoinModal(eventData) {
+            selectedEvent = eventData;
+            document.getElementById('eventVenue').textContent = eventData.venue;
+            document.getElementById('eventHook').textContent = eventData.hook;
+            document.getElementById('joinModal').style.display = 'flex';
+            
+            // Reset form
+            document.getElementById('guidelinesCheck').checked = false;
+            document.getElementById('confirmJoinButton').disabled = true;
+        }
+
+        function closeJoinModal() {
+            document.getElementById('joinModal').style.display = 'none';
+            selectedEvent = null;
+        }
+
+        function confirmJoin() {
+            if (selectedEvent) {
+                const eventCard = document.querySelector(`[data-event-id="${selectedEvent.id}"]`);
+                if (eventCard) {
+                    eventCard.classList.add('reserved');
+                    const button = eventCard.querySelector('.event-button');
+                    button.textContent = 'Upload Proof';
+                    button.style.background = '#00cc66';
+                    button.onclick = () => handleUploadProof(selectedEvent.id);
+                }
+                
+                showToast('Reserved. See you there!', 'success');
+                closeJoinModal();
+            }
+        }
+
+        function handleUploadProof(eventId) {
+            showToast('Proof uploaded successfully!', 'success');
+            
+            const eventCard = document.querySelector(`[data-event-id="${eventId}"]`);
+            if (eventCard) {
+                eventCard.classList.remove('reserved');
+                eventCard.classList.add('completed');
+                const button = eventCard.querySelector('.event-button');
+                button.textContent = 'Completed';
+                button.style.background = '#333333';
+                button.disabled = true;
+            }
+        }
+
+        // Admin functions
+        function addEvent() {
+            showToast('Add Event modal would appear here', 'info');
+        }
+
+        function viewRoster(eventId) {
+            showToast('Roster drawer would slide out showing creator status', 'info');
+        }
+
+        function editEvent(eventId) {
+            showToast('Event editor modal would appear here', 'info');
+        }
+
+        function deleteEvent(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                showToast('Event deleted successfully!', 'success');
+            }
+        }
+
+        // UI update functions
+        function updateUserInterface() {
+            if (currentUser) {
+                // Update header with user info
+                const userSection = document.querySelector('.dashboard-header .logo + div');
+                if (userSection) {
+                    userSection.innerHTML = `
+                        <button class="nav-button" style="background: #0066ff;">Events</button>
+                        <button class="nav-button">Profile</button>
+                        <div style="width: 40px; height: 40px; background: #0066ff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 600;">${currentUser.name.charAt(0)}</div>
+                    `;
+                }
+            }
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for guidelines checkbox
+            const checkbox = document.getElementById('guidelinesCheck');
+            const confirmButton = document.getElementById('confirmJoinButton');
+            
+            if (checkbox && confirmButton) {
+                checkbox.addEventListener('change', function() {
+                    confirmButton.disabled = !this.checked;
+                });
+            }
+
+            // Add click handlers for event buttons
+            document.querySelectorAll('.event-button').forEach(button => {
+                if (button.textContent === 'Join') {
+                    button.addEventListener('click', function() {
+                        const eventCard = this.closest('.event-card');
+                        const eventData = {
+                            id: eventCard.dataset.eventId || '1',
+                            venue: eventCard.querySelector('.venue-name').textContent,
+                            hook: eventCard.querySelector('.event-hook').textContent
+                        };
+                        openJoinModal(eventData);
+                    });
+                }
+            });
+
+            // Add click handlers for admin buttons
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.title;
+                    const eventId = this.closest('.table-row').dataset.eventId || '1';
+                    
+                    if (action === 'View Roster') {
+                        viewRoster(eventId);
+                    } else if (action === 'Edit') {
+                        editEvent(eventId);
+                    } else if (action === 'Delete') {
+                        deleteEvent(eventId);
+                    }
+                });
+            });
+
+            // Add data attributes to event cards
+            document.querySelectorAll('.event-card').forEach((card, index) => {
+                card.dataset.eventId = (index + 1).toString();
+            });
+
+            // Add data attributes to table rows
+            document.querySelectorAll('.table-row').forEach((row, index) => {
+                row.dataset.eventId = (index + 1).toString();
+            });
+        });
+    </script>
+</body>
+</html> 

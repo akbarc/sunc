@@ -1,0 +1,247 @@
+<!-- Auth Modal Component -->
+<div id="authModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <button class="close-button" onclick="closeAuthModal()">✕</button>
+        <h2 class="modal-title">Sign In</h2>
+        
+        <form id="authForm" onsubmit="handleAuthSubmit(event)">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <div class="input-wrapper">
+                    <div class="input-icon">📧</div>
+                    <input type="email" class="form-input" id="authEmail" required placeholder="your@email.com">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="input-wrapper">
+                    <div class="input-icon">🔒</div>
+                    <input type="password" class="form-input" id="authPassword" required placeholder="Enter your password">
+                    <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-button">Sign In</button>
+            <button type="button" class="forgot-link" onclick="handleForgotPassword()">Forgot password?</button>
+        </form>
+        
+        <div class="divider">
+            <span>or</span>
+        </div>
+        
+        <button class="instagram-button" onclick="handleInstagramLogin()">
+            📷 Log in with Instagram
+        </button>
+        
+        <div class="signup-prompt">
+            Don't have an account? 
+            <button type="button" class="signup-link" onclick="showPage('apply')">Apply to join</button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+}
+
+.modal-content {
+    background: #111111;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #666666;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    font-size: 1.2rem;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666666;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666666;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: #ffffff;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #333333;
+}
+
+.divider span {
+    padding: 0 1rem;
+}
+
+.instagram-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.instagram-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 39, 67, 0.3);
+}
+
+.forgot-link {
+    background: none;
+    border: none;
+    color: #0066ff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+.signup-prompt {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #333333;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.signup-link {
+    background: none;
+    border: none;
+    color: #0066ff;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}
+</style>
+
+<script>
+function openAuthModal() {
+    document.getElementById('authModal').style.display = 'flex';
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').style.display = 'none';
+}
+
+function togglePassword() {
+    const passwordInput = document.getElementById('authPassword');
+    const toggleButton = document.querySelector('.password-toggle');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = '🙈';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = '👁️';
+    }
+}
+
+function handleAuthSubmit(event) {
+    event.preventDefault();
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    
+    // Simulate authentication
+    if (email && password) {
+        showToast('Signed in successfully!', 'success');
+        closeAuthModal();
+        showPage('dashboard');
+    } else {
+        showToast('Please fill in all fields', 'error');
+    }
+}
+
+function handleInstagramLogin() {
+    showToast('Redirecting to Instagram...', 'info');
+    // In a real app, this would redirect to Instagram OAuth
+}
+
+function handleForgotPassword() {
+    showToast('Password reset email sent!', 'success');
+}
+</script> 

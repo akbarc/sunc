@@ -1,0 +1,169 @@
+<!-- Join Confirmation Modal -->
+<div id="joinModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Join Event</h2>
+            <button class="close-button" onclick="closeJoinModal()">✕</button>
+        </div>
+        
+        <div id="joinModalContent">
+            <h3 id="eventVenue" style="margin-bottom: 1rem;"></h3>
+            <p id="eventHook" style="color: #cccccc; margin-bottom: 1.5rem;"></p>
+            
+            <h4 style="margin-bottom: 1rem;">Guidelines</h4>
+            <ul class="guidelines-list">
+                <li class="guideline-item">Post at least one Instagram story during the event</li>
+                <li class="guideline-item">Share a Google Review within 48 hours</li>
+                <li class="guideline-item">Tag @SocietyUnlocked in your content</li>
+            </ul>
+            
+            <div class="penalty-clause">
+                <strong>Penalty:</strong> No-shows or failure to complete deliverables may result in suspension from future events.
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="guidelinesCheck" class="guidelines-checkbox">
+                <label for="guidelinesCheck">
+                    I accept the guidelines and understand the penalty clause
+                </label>
+            </div>
+            
+            <button class="modal-button" onclick="confirmJoin()" disabled id="confirmJoinButton">
+                Accept & Reserve
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Join Modal Specific Styles */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.guidelines-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.guideline-item {
+    padding: 1rem;
+    background: #000000;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    border-left: 3px solid #0066ff;
+}
+
+.penalty-clause {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid #ff4444;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    color: #ff4444;
+    font-size: 0.9rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.guidelines-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #0066ff;
+}
+
+.modal-button {
+    width: 100%;
+    padding: 1rem;
+    background: #0066ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-button:hover:not(:disabled) {
+    background: #0052cc;
+}
+
+.modal-button:disabled {
+    background: #666666;
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+let selectedEvent = null;
+
+function openJoinModal(eventData) {
+    selectedEvent = eventData;
+    document.getElementById('eventVenue').textContent = eventData.venue;
+    document.getElementById('eventHook').textContent = eventData.hook;
+    document.getElementById('joinModal').style.display = 'flex';
+    
+    // Reset form
+    document.getElementById('guidelinesCheck').checked = false;
+    document.getElementById('confirmJoinButton').disabled = true;
+}
+
+function closeJoinModal() {
+    document.getElementById('joinModal').style.display = 'none';
+    selectedEvent = null;
+}
+
+function confirmJoin() {
+    if (selectedEvent) {
+        // Update event status to reserved
+        const eventCard = document.querySelector(`[data-event-id="${selectedEvent.id}"]`);
+        if (eventCard) {
+            eventCard.classList.add('reserved');
+            const button = eventCard.querySelector('.event-button');
+            button.textContent = 'Upload Proof';
+            button.style.background = '#00cc66';
+            button.onclick = () => handleUploadProof(selectedEvent.id);
+        }
+        
+        showToast('Reserved. See you there!', 'success');
+        closeJoinModal();
+    }
+}
+
+// Add event listener for checkbox
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('guidelinesCheck');
+    const confirmButton = document.getElementById('confirmJoinButton');
+    
+    if (checkbox && confirmButton) {
+        checkbox.addEventListener('change', function() {
+            confirmButton.disabled = !this.checked;
+        });
+    }
+});
+
+function handleUploadProof(eventId) {
+    // Show upload form or modal
+    showToast('Proof uploaded successfully!', 'success');
+    
+    // Update event status to completed
+    const eventCard = document.querySelector(`[data-event-id="${eventId}"]`);
+    if (eventCard) {
+        eventCard.classList.remove('reserved');
+        eventCard.classList.add('completed');
+        const button = eventCard.querySelector('.event-button');
+        button.textContent = 'Completed';
+        button.style.background = '#333333';
+        button.disabled = true;
+    }
+}
+</script> 

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Unlocked - v0 Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #0066ff, #00cc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .screen-card {
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #333333;
+            transition: transform 0.2s ease;
+        }
+
+        .screen-card:hover {
+            transform: translateY(-4px);
+            border-color: #0066ff;
+        }
+
+        .screen-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #0066ff;
+        }
+
+        .screen-description {
+            color: #cccccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: #0066ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .tech-stack {
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #333333;
+            margin-bottom: 3rem;
+        }
+
+        .tech-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0066ff;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .tech-item {
+            background: #000000;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #333333;
+            text-align: center;
+        }
+
+        .tech-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-description {
+            font-size: 0.9rem;
+            color: #666666;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(45deg, rgba(0, 102, 255, 0.1), rgba(0, 204, 102, 0.1));
+            border-radius: 12px;
+            padding: 3rem;
+            border: 1px solid #0066ff;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #0066ff;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: #0052cc;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333333;
+            color: #666666;
+        }
+
+        .brand-tagline {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Society Unlocked</h1>
+            <p class="subtitle">v0 Front-End Demo - Creators fuel culture. Get rewarded for it.</p>
+        </div>
+
+        <div class="screens-grid">
+            <div class="screen-card">
+                <h3 class="screen-title">Landing Page</h3>
+                <p class="screen-description">Hero section with full-bleed nightlife imagery and compelling CTA</p>
+                <ul class="features-list">
+                    <li><span class="feature-icon">✓</span> Hero with "Apply to Join" CTA</li>
+                    <li><span class="feature-icon">✓</span> "How It Works" three-step process</li>
+                    <li><span class="feature-icon">✓</span> Auto-scrolling venue logos</li>
+                    <li><span class="feature-icon">✓</span> Minimal footer with legal links</li>
+                </ul>
+            </div>
+
+            <div class="screen-card">
+                <h3 class="screen-title">Application Flow</h3>
+                <p class="screen-description">Two-column layout with benefits reminder and comprehensive form</p>
+                <ul class="features-list">
+                    <li><span class="feature-icon">✓</span> 11-field application form</li>
+                    <li><span class="feature-icon">✓</span> Real-time validation</li>
+                    <li><span class="feature-icon">✓</span> Submit button with smart states</li>
+                    <li><span class="feature-icon">✓</span> Success confirmation page</li>
+                </ul>
+            </div>
+
+            <div class="screen-card">
+                <h3 class="screen-title">Creator Dashboard</h3>
+                <p class="screen-description">Event management with profile tracking and deliverables</p>
+                <ul class="features-list">
+                    <li><span class="feature-icon">✓</span> Event grid with capacity meters</li>
+                    <li><span class="feature-icon">✓</span> Profile side panel with stats</li>
+                    <li><span class="feature-icon">✓</span> Join confirmation modal</li>
+                    <li><span class="feature-icon">✓</span> Upload proof functionality</li>
+                </ul>
+            </div>
+
+            <div class="screen-card">
+                <h3 class="screen-title">Admin Console</h3>
+                <p class="screen-description">Internal event and roster management system</p>
+                <ul class="features-list">
+                    <li><span class="feature-icon">✓</span> Event management table</li>
+                    <li><span class="feature-icon">✓</span> Add/edit event modal</li>
+                    <li><span class="feature-icon">✓</span> Roster drawer with status</li>
+                    <li><span class="feature-icon">✓</span> Manual ban/unban functionality</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h3 class="tech-title">Technology Stack</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-name">React 18</div>
+                    <div class="tech-description">Modern React with hooks</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">React Router 6</div>
+                    <div class="tech-description">Client-side routing</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">Styled Components</div>
+                    <div class="tech-description">CSS-in-JS styling</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">React Hook Form</div>
+                    <div class="tech-description">Form handling & validation</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">React Hot Toast</div>
+                    <div class="tech-description">Toast notifications</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-name">Lucide React</div>
+                    <div class="tech-description">Icon library</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h3 class="cta-title">Ready to Build?</h3>
+            <p class="cta-description">
+                The complete React application is ready to run. Install dependencies and start the development server to see the full Society Unlocked experience.
+            </p>
+            <a href="#installation" class="cta-button">View Installation Guide</a>
+        </div>
+
+        <div id="installation" style="margin-top: 3rem;">
+            <h3 style="color: #0066ff; margin-bottom: 1rem;">Installation Instructions</h3>
+            <div style="background: #111111; padding: 1.5rem; border-radius: 8px; border: 1px solid #333333;">
+                <pre style="color: #cccccc; font-family: 'Monaco', 'Menlo', monospace; overflow-x: auto;">
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Build for production
+npm run build</pre>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="brand-tagline">Society Unlocked</div>
+            <p>Creators fuel culture. Get rewarded for it.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+                This is a v0 prototype demonstrating the front-end architecture and user experience.
+            </p>
+        </div>
+    </div>
+</body>
+</html> 
