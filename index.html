@@ -677,7 +677,7 @@
             margin-bottom: 2rem;
         }
 
-        /* Admin Console -->
+        /* Admin Console */
         .admin-container {
             min-height: 100vh;
             background: #000000;
@@ -1635,10 +1635,30 @@
 
         // Page navigation
         function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
+            console.log('🔄 Showing page:', pageId);
+            const pages = document.querySelectorAll('.page');
+            const targetPage = document.getElementById(pageId);
+            
+            console.log('📄 Available pages:', Array.from(pages).map(p => p.id));
+            console.log('🎯 Target page found:', !!targetPage);
+            
+            if (!targetPage) {
+                console.error('❌ Page not found:', pageId);
+                console.log('Available page IDs:', Array.from(document.querySelectorAll('.page')).map(p => p.id));
+                return;
+            }
+            
+            pages.forEach(page => {
                 page.classList.remove('active');
+                console.log('📵 Hiding page:', page.id);
             });
-            document.getElementById(pageId).classList.add('active');
+            
+            targetPage.classList.add('active');
+            console.log('✅ Showing page:', pageId);
+            
+            // Update URL hash
+            window.location.hash = pageId;
+            console.log('🔗 Updated hash to:', window.location.hash);
         }
 
         // Authentication functions
@@ -1847,72 +1867,143 @@
 
         // Admin Section Navigation
         function showAdminSection(section) {
+            console.log('🔧 Showing admin section:', section);
+            
             // Hide all sections
-            document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.admin-nav-button').forEach(el => el.classList.remove('active'));
+            const adminSections = document.querySelectorAll('.admin-section');
+            const adminButtons = document.querySelectorAll('.admin-nav-button');
+            
+            console.log('📋 Available admin sections:', Array.from(adminSections).map(s => s.id));
+            console.log('🔘 Available admin buttons:', adminButtons.length);
+            
+            adminSections.forEach(el => {
+                el.classList.remove('active');
+                console.log('📵 Hiding admin section:', el.id);
+            });
+            
+            adminButtons.forEach(el => {
+                el.classList.remove('active');
+                console.log('🔘 Deactivating button:', el.textContent);
+            });
             
             // Show selected section
-            document.getElementById(`admin-${section}`).classList.add('active');
-            document.querySelector(`[onclick="showAdminSection('${section}')"]`).classList.add('active');
+            const targetSection = document.getElementById(`admin-${section}`);
+            const targetButton = document.querySelector(`[onclick="showAdminSection('${section}')"]`);
+            
+            console.log('🎯 Target section found:', !!targetSection);
+            console.log('🎯 Target button found:', !!targetButton);
+            
+            if (targetSection) {
+                targetSection.classList.add('active');
+                console.log('✅ Activated admin section:', `admin-${section}`);
+            }
+            
+            if (targetButton) {
+                targetButton.classList.add('active');
+                console.log('✅ Activated admin button:', targetButton.textContent);
+            }
             
             currentAdminSection = section;
+            console.log('📝 Set current admin section to:', section);
             loadSectionData(section);
         }
 
         // Load section data
         async function loadSectionData(section) {
+            console.log('📊 Loading section data for:', section);
             try {
                 switch(section) {
                     case 'dashboard':
+                        console.log('📈 Loading dashboard stats...');
                         await loadDashboardStats();
                         break;
                     case 'applications':
+                        console.log('📋 Loading applications...');
                         await loadApplications();
                         break;
                     case 'members':
+                        console.log('👥 Loading members...');
                         await loadMembers();
                         break;
                     case 'events':
+                        console.log('🎉 Loading events...');
                         await loadEvents();
                         break;
+                    default:
+                        console.warn('⚠️ Unknown section:', section);
                 }
+                console.log('✅ Section data loaded successfully for:', section);
             } catch (error) {
-                console.error('Error loading section data:', error);
+                console.error('💥 Error loading section data:', error);
                 showToast('Failed to load data. Please try again.', 'error');
             }
         }
 
         // Initialize admin console
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM loaded, checking hash:', window.location.hash);
+            console.log('🚀 DOM loaded, checking hash:', window.location.hash);
+            console.log('🌐 Current URL:', window.location.href);
+            
+            // Check what pages are available
+            const pages = document.querySelectorAll('.page');
+            console.log('📄 Available pages on load:', Array.from(pages).map(p => p.id));
+            
+            // Check for admin elements
+            const adminPage = document.getElementById('admin-page');
+            const adminContainer = document.querySelector('.admin-container');
+            const adminSections = document.querySelectorAll('.admin-section');
+            
+            console.log('🔧 Admin page element found:', !!adminPage);
+            console.log('🔧 Admin container found:', !!adminContainer);
+            console.log('🔧 Admin sections found:', adminSections.length);
+            
+            // Handle hash navigation
             if (window.location.hash === '#admin' || window.location.hash === '#admin-page') {
-                console.log('Showing admin page');
+                console.log('🔧 Hash indicates admin page, showing admin-page');
                 showPage('admin-page');
-                showAdminSection('dashboard');
+                setTimeout(() => {
+                    showAdminSection('dashboard');
+                }, 100);
+            } else if (window.location.hash) {
+                console.log('🔗 Hash found, showing page:', window.location.hash.substring(1));
+                showPage(window.location.hash.substring(1));
+            } else {
+                console.log('🏠 No hash, showing landing page');
+                showPage('landing');
             }
             
             // Test Supabase connection
-            console.log('Testing Supabase connection...');
+            console.log('🔗 Testing Supabase connection...');
             testSupabaseConnection();
         });
 
         // Test function to verify Supabase connection
         async function testSupabaseConnection() {
             try {
-                console.log('Supabase client:', supabaseClient);
-                const { data, error } = await supabaseClient
+                console.log('🔗 Testing Supabase connection...');
+                console.log('📊 Supabase client:', supabaseClient);
+                console.log('📊 Client type:', typeof supabaseClient);
+                
+                if (!supabaseClient) {
+                    throw new Error('Supabase client not initialized');
+                }
+                
+                console.log('📡 Making test query to events table...');
+                const { data, error, count } = await supabaseClient
                     .from('events')
-                    .select('count', { count: 'exact', head: true });
+                    .select('*', { count: 'exact', head: true });
+                
+                console.log('📡 Supabase response:', { data, error, count });
                 
                 if (error) {
-                    console.error('Supabase connection error:', error);
+                    console.error('❌ Supabase connection error:', error);
                     showToast('Database connection failed: ' + error.message, 'error');
                 } else {
-                    console.log('Supabase connection successful');
+                    console.log('✅ Supabase connection successful, count:', count);
                     showToast('Database connected successfully', 'success');
                 }
             } catch (err) {
-                console.error('Supabase test failed:', err);
+                console.error('💥 Supabase test failed:', err);
                 showToast('Database connection failed: ' + err.message, 'error');
             }
         }
@@ -2334,31 +2425,55 @@
 
         async function submitNewEvent(event) {
             event.preventDefault();
+            console.log('Form submitted');
+            
             const formData = new FormData(event.target);
             const eventData = Object.fromEntries(formData);
+            console.log('Form data:', eventData);
+            
+            // Manual validation
+            const requiredFields = ['venue', 'hook', 'date', 'capacity', 'description', 'location_address'];
+            const missingFields = requiredFields.filter(field => {
+                const value = eventData[field];
+                const isEmpty = !value || (typeof value === 'string' && value.trim() === '');
+                console.log(`🔍 Field ${field}:`, value, 'isEmpty:', isEmpty);
+                return isEmpty;
+            });
+            
+            console.log('📝 Form validation - missing fields:', missingFields);
+            console.log('📝 All form data:', eventData);
+            
+            if (missingFields.length > 0) {
+                showToast(`Please fill in all required fields: ${missingFields.join(', ')}`, 'error');
+                return;
+            }
             
             try {
-                const { data, error } = await supabase
+                console.log('Submitting to Supabase...');
+                const { data, error } = await supabaseClient
                     .from('events')
                     .insert([{
-                        venue: eventData.venue,
-                        hook: eventData.hook,
+                        venue: eventData.venue.trim(),
+                        hook: eventData.hook.trim(),
                         date: eventData.date,
                         capacity: parseInt(eventData.capacity),
-                        description: eventData.description,
-                        location_address: eventData.location_address,
+                        description: eventData.description.trim(),
+                        location_address: eventData.location_address.trim(),
                         status: 'active'
                     }])
                     .select();
+
+                console.log('Supabase response:', { data, error });
 
                 if (error) throw error;
 
                 showToast('Event created successfully', 'success');
                 closeAddEventModal();
+                event.target.reset(); // Reset the form
                 loadEvents();
             } catch (error) {
                 console.error('Error creating event:', error);
-                showToast('Failed to create event', 'error');
+                showToast('Failed to create event: ' + error.message, 'error');
             }
         }
 
@@ -2479,6 +2594,26 @@
             // Placeholder for member profile viewing
             showToast('Member profile feature coming soon', 'info');
         }
+
+        // Auth modal function
+        function openAuthModal() {
+            showToast('Authentication feature coming soon', 'info');
+        }
+
+        // Helper function to navigate to admin
+        function goToAdmin() {
+            console.log('🔧 Navigating to admin page...');
+            showPage('admin-page');
+            showAdminSection('dashboard');
+        }
+
+        // Add keyboard shortcut for admin access
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                console.log('🔧 Admin shortcut triggered (Ctrl+Shift+A)');
+                goToAdmin();
+            }
+        });
     </script>
 </body>
 </html> 

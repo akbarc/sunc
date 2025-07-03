@@ -12,7 +12,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export const authService = {
     // Sign up with email and password
     async signUp(email, password, userData) {
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
             email,
             password,
             options: {
@@ -32,7 +32,7 @@ export const authService = {
 
     // Sign in with email and password
     async signIn(email, password) {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
             email,
             password
         })
@@ -49,21 +49,21 @@ export const authService = {
 
     // Sign out
     async signOut() {
-        const { error } = await supabase.auth.signOut()
+        const { error } = await supabaseClient.auth.signOut()
         if (error) throw error
         return true
     },
 
     // Get current user
     async getCurrentUser() {
-        const { data: { user }, error } = await supabase.auth.getUser()
+        const { data: { user }, error } = await supabaseClient.auth.getUser()
         if (error) throw error
         return user
     },
 
     // Create user profile
     async createProfile(userId, userData) {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('profiles')
             .insert([{
                 id: userId,
@@ -81,7 +81,7 @@ export const authService = {
 
     // Update last visit
     async updateLastVisit(userId) {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('profiles')
             .update({ last_visit: new Date().toISOString() })
             .eq('id', userId)
@@ -95,7 +95,7 @@ export const authService = {
 export const applicationService = {
     // Submit new application
     async submitApplication(applicationData) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('applications')
             .insert([applicationData])
             .select()
@@ -106,7 +106,7 @@ export const applicationService = {
 
     // Get all applications (admin only)
     async getAllApplications() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('applications')
             .select('*')
             .order('created_at', { ascending: false })
@@ -117,7 +117,7 @@ export const applicationService = {
 
     // Get pending applications
     async getPendingApplications() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .rpc('get_pending_applications')
         
         if (error) throw error
@@ -126,7 +126,7 @@ export const applicationService = {
 
     // Review application (approve/deny)
     async reviewApplication(applicationId, status, reviewNotes = null) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('applications')
             .update({
                 status,
@@ -145,7 +145,7 @@ export const applicationService = {
 export const eventService = {
     // Get all events
     async getAllEvents() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('events')
             .select('*')
             .order('date', { ascending: true })
@@ -156,7 +156,7 @@ export const eventService = {
 
     // Get active events
     async getActiveEvents() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('events')
             .select('*')
             .eq('status', 'active')
@@ -169,18 +169,34 @@ export const eventService = {
 
     // Create new event (admin only)
     async createEvent(eventData) {
-        const { data, error } = await supabase
-            .from('events')
-            .insert([eventData])
-            .select()
-        
-        if (error) throw error
-        return data[0]
+        try {
+            console.log('🚀 Creating event with data:', eventData);
+            
+            const { data, error } = await supabaseClient
+                .from('events')
+                .insert([eventData])
+                .select()
+            
+            if (error) {
+                console.error('❌ Supabase error creating event:', error);
+                // Check if it's a column not found error
+                if (error.message && error.message.includes('location_address')) {
+                    throw new Error('Database schema is missing the location_address column. Please run the migration script.');
+                }
+                throw error;
+            }
+            
+            console.log('✅ Event created successfully:', data[0]);
+            return data[0];
+        } catch (error) {
+            console.error('❌ Error creating event:', error);
+            throw error;
+        }
     },
 
     // Update event (admin only)
     async updateEvent(eventId, updates) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('events')
             .update(updates)
             .eq('id', eventId)
@@ -192,7 +208,7 @@ export const eventService = {
 
     // Delete event (admin only)
     async deleteEvent(eventId) {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('events')
             .delete()
             .eq('id', eventId)
@@ -203,7 +219,7 @@ export const eventService = {
 
     // Get event details
     async getEvent(eventId) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('events')
             .select('*')
             .eq('id', eventId)
@@ -218,7 +234,7 @@ export const eventService = {
 export const participationService = {
     // Join event
     async joinEvent(eventId, userId) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('event_participants')
             .insert([{
                 event_id: eventId,
@@ -234,7 +250,7 @@ export const participationService = {
 
     // Leave event
     async leaveEvent(eventId, userId) {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('event_participants')
             .delete()
             .eq('event_id', eventId)
@@ -246,7 +262,7 @@ export const participationService = {
 
     // Get user's events
     async getUserEvents(userId) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .rpc('get_user_events', { user_uuid: userId })
         
         if (error) throw error
@@ -255,7 +271,7 @@ export const participationService = {
 
     // Get event participants (admin only)
     async getEventParticipants(eventId) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .rpc('get_event_participants', { event_id_param: eventId })
         
         if (error) throw error
@@ -264,7 +280,7 @@ export const participationService = {
 
     // Update participation status
     async updateParticipationStatus(participationId, status) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('event_participants')
             .update({ status })
             .eq('id', participationId)
@@ -276,7 +292,7 @@ export const participationService = {
 
     // Upload proof
     async uploadProof(participationId, proofUrl) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('event_participants')
             .update({
                 proof_uploaded: true,
@@ -296,7 +312,7 @@ export const participationService = {
 export const profileService = {
     // Get user profile
     async getUserProfile(userId) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('profiles')
             .select('*')
             .eq('id', userId)
@@ -308,7 +324,7 @@ export const profileService = {
 
     // Update user profile
     async updateProfile(userId, updates) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('profiles')
             .update(updates)
             .eq('id', userId)
@@ -320,7 +336,7 @@ export const profileService = {
 
     // Get all members (admin only)
     async getAllMembers() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('profiles')
             .select('*')
             .order('created_at', { ascending: false })
@@ -331,7 +347,7 @@ export const profileService = {
 
     // Ban/unban user (admin only)
     async toggleUserBan(userId, isBanned) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('profiles')
             .update({ is_banned: isBanned })
             .eq('id', userId)
@@ -346,7 +362,7 @@ export const profileService = {
 export const newsletterService = {
     // Subscribe to newsletter
     async subscribe(email) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('newsletter_subscribers')
             .insert([{ email }])
             .select()
@@ -357,7 +373,7 @@ export const newsletterService = {
 
     // Get all subscribers (admin only)
     async getAllSubscribers() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('newsletter_subscribers')
             .select('*')
             .order('subscribed_at', { ascending: false })
@@ -393,7 +409,7 @@ export const adminService = {
 
     // Get admin logs
     async getAdminLogs() {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('admin_logs')
             .select('*')
             .order('created_at', { ascending: false })
