@@ -1100,6 +1100,225 @@
             color: #ffffff;
         }
 
+        /* Auth Modal Styles */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666666;
+            z-index: 1;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            padding-left: 2.5rem;
+            padding-right: 2.5rem;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666666;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: color 0.2s ease;
+            z-index: 1;
+        }
+
+        .password-toggle:hover {
+            color: #ffffff;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #333333;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .instagram-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .instagram-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 39, 67, 0.3);
+        }
+
+        .forgot-link {
+            background: none;
+            border: none;
+            color: #0066ff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333333;
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        .signup-link {
+            background: none;
+            border: none;
+            color: #0066ff;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+        #authMessage {
+            background: #1a4b3a;
+            border: 1px solid #2d8659;
+            color: #4ade80;
+        }
+
+        #authMessage.error {
+            background: #4b1a1a;
+            border: 1px solid #86292d;
+            color: #f87171;
+        }
+
+        #authMessage.warning {
+            background: #4b3a1a;
+            border: 1px solid #d97706;
+            color: #fbbf24;
+        }
+
+        /* Join Modal Styles */
+        .guidelines-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .guideline-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333333;
+            color: #cccccc;
+        }
+
+        .guideline-item:last-child {
+            border-bottom: none;
+        }
+
+        .guideline-item::before {
+            content: '✓';
+            color: #00cc66;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .penalty-clause {
+            background: #4b1a1a;
+            border: 1px solid #86292d;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            color: #f87171;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .guidelines-checkbox {
+            margin-top: 0.125rem;
+        }
+
+        .checkbox-container label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-button:hover:not(:disabled) {
+            background: #0052cc;
+        }
+
+        .modal-button:disabled {
+            background: #666666;
+            cursor: not-allowed;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
@@ -1612,6 +1831,99 @@
         </div>
     </div>
 
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeAuthModal()">✕</button>
+            <h2 class="modal-title" id="authTitle">Sign In</h2>
+            
+            <div id="authMessage" style="padding: 1rem; margin-bottom: 1rem; border-radius: 6px; display: none;">
+                <p id="authMessageText"></p>
+            </div>
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">📧</div>
+                        <input type="email" class="form-input" id="authEmail" required placeholder="your@email.com">
+                    </div>
+                </div>
+                
+                <div class="form-group" id="passwordGroup">
+                    <label class="form-label" id="passwordLabel">Password</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" class="form-input" id="authPassword" required placeholder="Enter your password">
+                        <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" class="form-input" id="authConfirmPassword" placeholder="Confirm your password">
+                        <button type="button" class="password-toggle" onclick="toggleConfirmPassword()">👁️</button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-button" id="authSubmitButton">Sign In</button>
+                <button type="button" class="forgot-link" onclick="handleForgotPassword()">Forgot password?</button>
+            </form>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <button class="instagram-button" onclick="handleInstagramLogin()">
+                📷 Log in with Instagram
+            </button>
+            
+            <div class="signup-prompt">
+                Don't have an account? 
+                <button type="button" class="signup-link" onclick="showPage('apply')">Apply to join</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Confirmation Modal -->
+    <div id="joinModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Join Event</h2>
+                <button class="close-button" onclick="closeJoinModal()">✕</button>
+            </div>
+            
+            <div id="joinModalContent">
+                <h3 id="eventVenue" style="margin-bottom: 1rem;"></h3>
+                <p id="eventHook" style="color: #cccccc; margin-bottom: 1.5rem;"></p>
+                
+                <h4 style="margin-bottom: 1rem;">Guidelines</h4>
+                <ul class="guidelines-list">
+                    <li class="guideline-item">Post at least one Instagram story during the event</li>
+                    <li class="guideline-item">Share a Google Review within 48 hours</li>
+                    <li class="guideline-item">Tag @SocietyUnlocked in your content</li>
+                </ul>
+                
+                <div class="penalty-clause">
+                    <strong>Penalty:</strong> No-shows or failure to complete deliverables may result in suspension from future events.
+                </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="guidelinesCheck" class="guidelines-checkbox">
+                    <label for="guidelinesCheck">
+                        I accept the guidelines and understand the penalty clause
+                    </label>
+                </div>
+                
+                <button class="modal-button" onclick="confirmJoin()" disabled id="confirmJoinButton">
+                    Accept & Reserve
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Container -->
     <div id="toastContainer"></div>
 
@@ -1664,18 +1976,59 @@
             targetPage.classList.add('active');
             console.log('✅ Showing page:', pageId);
             
+            // Load page-specific data
+            if (pageId === 'dashboard') {
+                loadDashboardEvents();
+            } else if (pageId === 'admin-page') {
+                loadDashboardStats();
+                loadApplications();
+                loadMembers();
+                loadEvents();
+            }
+            
             // Update URL hash
             window.location.hash = pageId;
             console.log('🔗 Updated hash to:', window.location.hash);
         }
 
+        // Authentication State
+        let isCreatingAccount = false;
+        let approvedApplication = null;
+
         // Authentication functions
         function openAuthModal() {
             document.getElementById('authModal').style.display = 'flex';
+            resetAuthModal();
         }
 
         function closeAuthModal() {
             document.getElementById('authModal').style.display = 'none';
+            resetAuthModal();
+        }
+
+        function resetAuthModal() {
+            isCreatingAccount = false;
+            approvedApplication = null;
+            document.getElementById('authTitle').textContent = 'Sign In';
+            document.getElementById('passwordLabel').textContent = 'Password';
+            document.getElementById('authSubmitButton').textContent = 'Sign In';
+            document.getElementById('confirmPasswordGroup').style.display = 'none';
+            document.getElementById('authPassword').required = true;
+            hideAuthMessage();
+            document.getElementById('authForm').reset();
+        }
+
+        function showAuthMessage(message, type = 'info') {
+            const messageDiv = document.getElementById('authMessage');
+            const messageText = document.getElementById('authMessageText');
+            
+            messageDiv.className = type === 'error' ? 'error' : type === 'warning' ? 'warning' : '';
+            messageText.textContent = message;
+            messageDiv.style.display = 'block';
+        }
+
+        function hideAuthMessage() {
+            document.getElementById('authMessage').style.display = 'none';
         }
 
         function togglePassword() {
@@ -1691,28 +2044,326 @@
             }
         }
 
-        function handleAuthSubmit(event) {
-            event.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
+        function toggleConfirmPassword() {
+            const passwordInput = document.getElementById('authConfirmPassword');
+            const toggleButtons = document.querySelectorAll('.password-toggle');
+            const confirmToggle = toggleButtons[1]; // Second toggle button
             
-            if (email && password) {
-                currentUser = { email, name: 'John Doe' };
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                confirmToggle.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                confirmToggle.textContent = '👁️';
+            }
+        }
+
+        async function handleAuthSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('authEmail').value.trim().toLowerCase();
+            const password = document.getElementById('authPassword').value;
+            const confirmPassword = document.getElementById('authConfirmPassword').value;
+            
+            console.log('🔐 Auth submit:', { email, isCreatingAccount });
+            
+            // Show loading state
+            const submitButton = document.getElementById('authSubmitButton');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = isCreatingAccount ? 'Creating Account...' : 'Signing In...';
+            submitButton.disabled = true;
+            
+            try {
+                if (isCreatingAccount) {
+                    // Validate password confirmation
+                    if (password !== confirmPassword) {
+                        showAuthMessage('Passwords do not match', 'error');
+                        return;
+                    }
+                    
+                    if (password.length < 6) {
+                        showAuthMessage('Password must be at least 6 characters', 'error');
+                        return;
+                    }
+                    
+                    // Create the user account
+                    await createUserAccount(email, password, approvedApplication);
+                } else {
+                    // Check if email exists in approved applications
+                    const application = await checkApprovedApplication(email);
+                    
+                    if (!application) {
+                        showAuthMessage('Email not found. Please apply first or contact support.', 'error');
+                        return;
+                    }
+                    
+                    // Try to sign in with existing account
+                    try {
+                        await signInUser(email, password);
+                    } catch (signInError) {
+                        // If sign in fails, this might be their first time - offer to create account
+                        if (signInError.message.includes('Invalid login credentials') || 
+                            signInError.message.includes('Email not confirmed')) {
+                            await promptPasswordSetup(email, application);
+                            return;
+                        }
+                        throw signInError;
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Authentication error:', error);
+                showAuthMessage(error.message || 'Authentication failed. Please try again.', 'error');
+            } finally {
+                // Reset button
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        }
+
+        async function checkApprovedApplication(email) {
+            console.log('🔍 Checking approved application for:', email);
+            
+            try {
+                const { data: applications, error } = await supabaseClient
+                    .from('applications')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('status', 'approved')
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+                    console.error('❌ Error checking application:', error);
+                    throw new Error('Failed to verify application status');
+                }
+                
+                console.log('✅ Application check result:', applications);
+                return applications;
+            } catch (error) {
+                console.error('❌ Error in checkApprovedApplication:', error);
+                return null;
+            }
+        }
+
+        async function promptPasswordSetup(email, application) {
+            console.log('🔐 Prompting password setup for:', email);
+            
+            isCreatingAccount = true;
+            approvedApplication = application;
+            
+            document.getElementById('authTitle').textContent = 'Set Your Password';
+            document.getElementById('passwordLabel').textContent = 'Create Password';
+            document.getElementById('authSubmitButton').textContent = 'Create Account';
+            document.getElementById('confirmPasswordGroup').style.display = 'block';
+            document.getElementById('authPassword').value = '';
+            document.getElementById('authPassword').required = true;
+            document.getElementById('authConfirmPassword').required = true;
+            
+            showAuthMessage(`Welcome ${application.full_name}! Please create a password for your account.`, 'info');
+        }
+
+        async function createUserAccount(email, password, application) {
+            console.log('🚀 Creating user account for:', email);
+            
+            try {
+                // Create user with Supabase Auth
+                const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: application.full_name,
+                            instagram_handle: application.instagram
+                        }
+                    }
+                });
+                
+                if (authError) {
+                    console.error('❌ Auth signup error:', authError);
+                    throw authError;
+                }
+                
+                console.log('✅ User created:', authData.user);
+                
+                // Create profile
+                if (authData.user) {
+                    await createUserProfile(authData.user.id, application);
+                    
+                    currentUser = {
+                        id: authData.user.id,
+                        email: authData.user.email,
+                        name: application.full_name,
+                        instagram: application.instagram,
+                        application: application
+                    };
+                    
+                    showToast('Account created successfully! Welcome to Society Unlocked!', 'success');
+                    closeAuthModal();
+                    showPage('dashboard');
+                    updateUserInterface();
+                }
+            } catch (error) {
+                console.error('❌ Account creation error:', error);
+                throw error;
+            }
+        }
+
+        async function createUserProfile(userId, application) {
+            console.log('👤 Creating user profile for:', userId);
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .insert([{
+                        id: userId,
+                        full_name: application.full_name,
+                        instagram_handle: application.instagram,
+                        follower_count: application.follower_count,
+                        content_category: application.content_category,
+                        city: application.city,
+                        is_verified: true, // They're approved, so they're verified
+                        last_visit: new Date().toISOString()
+                    }])
+                    .select();
+                
+                if (error) {
+                    console.error('❌ Profile creation error:', error);
+                    throw error;
+                }
+                
+                console.log('✅ Profile created:', data[0]);
+                return data[0];
+            } catch (error) {
+                console.error('❌ Error creating profile:', error);
+                throw error;
+            }
+        }
+
+        async function signInUser(email, password) {
+            console.log('🔐 Signing in user:', email);
+            
+            try {
+                const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
+                
+                if (authError) {
+                    console.error('❌ Sign in error:', authError);
+                    throw authError;
+                }
+                
+                console.log('✅ User signed in:', authData.user);
+                
+                // Get user profile
+                const profile = await getUserProfile(authData.user.id);
+                
+                // Update last visit
+                await updateLastVisit(authData.user.id);
+                
+                currentUser = {
+                    id: authData.user.id,
+                    email: authData.user.email,
+                    name: profile.full_name || authData.user.user_metadata?.full_name,
+                    instagram: profile.instagram_handle,
+                    profile: profile
+                };
+                
                 showToast('Signed in successfully!', 'success');
                 closeAuthModal();
                 showPage('dashboard');
                 updateUserInterface();
+            } catch (error) {
+                console.error('❌ Sign in error:', error);
+                throw error;
+            }
+        }
+
+        async function getUserProfile(userId) {
+            console.log('👤 Getting user profile for:', userId);
+            
+            try {
+                const { data: profile, error } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', userId)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    console.error('❌ Profile fetch error:', error);
+                    throw error;
+                }
+                
+                console.log('✅ Profile fetched:', profile);
+                return profile || {};
+            } catch (error) {
+                console.error('❌ Error getting profile:', error);
+                return {};
+            }
+        }
+
+        async function updateLastVisit(userId) {
+            console.log('⏰ Updating last visit for:', userId);
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('profiles')
+                    .update({ 
+                        last_visit: new Date().toISOString() 
+                    })
+                    .eq('id', userId);
+                
+                if (error) {
+                    console.error('❌ Last visit update error:', error);
+                }
+            } catch (error) {
+                console.error('❌ Error updating last visit:', error);
+            }
+        }
+
+        async function signOutUser() {
+            console.log('🔐 Signing out user');
+            
+            try {
+                const { error } = await supabaseClient.auth.signOut();
+                
+                if (error) {
+                    console.error('❌ Sign out error:', error);
+                    throw error;
+                }
+                
+                currentUser = null;
+                showToast('Signed out successfully', 'success');
+                showPage('landing');
+                updateUserInterface();
+            } catch (error) {
+                console.error('❌ Error signing out:', error);
+                showToast('Error signing out', 'error');
+            }
+        }
+
+        function updateUserInterface() {
+            // Update UI based on current user state
+            const signInButton = document.querySelector('.sign-in-button');
+            if (currentUser) {
+                signInButton.textContent = 'Sign Out';
+                signInButton.onclick = signOutUser;
             } else {
-                showToast('Please fill in all fields', 'error');
+                signInButton.textContent = 'Sign In';
+                signInButton.onclick = openAuthModal;
             }
         }
 
         function handleInstagramLogin() {
-            showToast('Redirecting to Instagram...', 'info');
+            showToast('Instagram login coming soon!', 'info');
         }
 
         function handleForgotPassword() {
-            showToast('Password reset email sent!', 'success');
+            const email = document.getElementById('authEmail').value;
+            if (!email) {
+                showAuthMessage('Please enter your email address first', 'error');
+                return;
+            }
+            
+            showToast('Password reset feature coming soon! Contact support for help.', 'info');
         }
 
         async function handleNewsletterSignup(event) {
@@ -1812,6 +2463,13 @@
 
         // Join event functions
         function openJoinModal(eventData) {
+            // Check if user is authenticated
+            if (!currentUser) {
+                showToast('Please sign in to join events', 'error');
+                openAuthModal();
+                return;
+            }
+            
             selectedEvent = eventData;
             document.getElementById('eventVenue').textContent = eventData.venue;
             document.getElementById('eventHook').textContent = eventData.hook;
@@ -1827,19 +2485,59 @@
             selectedEvent = null;
         }
 
-        function confirmJoin() {
-            if (selectedEvent) {
-                const eventCard = document.querySelector(`[data-event-id="${selectedEvent.id}"]`);
-                if (eventCard) {
-                    eventCard.classList.add('reserved');
-                    const button = eventCard.querySelector('.event-button');
-                    button.textContent = 'Upload Proof';
-                    button.style.background = '#00cc66';
-                    button.onclick = () => handleUploadProof(selectedEvent.id);
+        async function confirmJoin() {
+            if (!selectedEvent || !currentUser) {
+                showToast('Authentication required', 'error');
+                return;
+            }
+
+            const submitButton = document.getElementById('confirmJoinButton');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Joining...';
+            submitButton.disabled = true;
+
+            try {
+                // Create event participation record
+                const { data, error } = await supabaseClient
+                    .from('event_participants')
+                    .insert([{
+                        event_id: selectedEvent.id,
+                        user_id: currentUser.id,
+                        status: 'joined',
+                        joined_at: new Date().toISOString()
+                    }])
+                    .select();
+
+                if (error) {
+                    if (error.code === '23505') { // Unique constraint violation
+                        showToast('You have already joined this event!', 'warning');
+                    } else {
+                        console.error('❌ Error joining event:', error);
+                        throw error;
+                    }
+                } else {
+                    console.log('✅ Joined event successfully:', data[0]);
+                    
+                    // Update UI
+                    const eventCard = document.querySelector(`[data-event-id="${selectedEvent.id}"]`);
+                    if (eventCard) {
+                        eventCard.classList.add('reserved');
+                        const button = eventCard.querySelector('.event-button');
+                        button.textContent = 'Upload Proof';
+                        button.style.background = '#00cc66';
+                        button.onclick = () => handleUploadProof(selectedEvent.id);
+                    }
+                    
+                    showToast('Reserved. See you there!', 'success');
                 }
                 
-                showToast('Reserved. See you there!', 'success');
                 closeJoinModal();
+            } catch (error) {
+                console.error('❌ Error joining event:', error);
+                showToast('Failed to join event: ' + error.message, 'error');
+            } finally {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
             }
         }
 
@@ -1966,7 +2664,7 @@
         }
 
         // Initialize admin console
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             console.log('🚀 DOM loaded, checking hash:', window.location.hash);
             console.log('🌐 Current URL:', window.location.href);
             
@@ -1982,6 +2680,9 @@
             console.log('🔧 Admin page element found:', !!adminPage);
             console.log('🔧 Admin container found:', !!adminContainer);
             console.log('🔧 Admin sections found:', adminSections.length);
+            
+            // Check authentication state first
+            await checkAuthState();
             
             // Handle hash navigation
             if (window.location.hash === '#admin' || window.location.hash === '#admin-page') {
@@ -2121,6 +2822,218 @@
                 document.getElementById('total-members').textContent = '0';
                 document.getElementById('pending-applications').textContent = '0';
                 document.getElementById('active-events').textContent = '0';
+            }
+        }
+
+        // Create Test Approved Application
+        async function createTestApprovedApplication() {
+            console.log('🧪 Creating test approved application...');
+            
+            try {
+                const testApplication = {
+                    full_name: 'Test Creator',
+                    email: 'test@creator.com',
+                    phone: '+1234567890',
+                    instagram: '@testcreator',
+                    follower_count: 15000,
+                    content_category: 'Food & Lifestyle',
+                    city: 'New York City',
+                    motivation: 'I love discovering new places and sharing them with my community!',
+                    status: 'approved',
+                    reviewed_at: new Date().toISOString()
+                };
+
+                const { data, error } = await supabaseClient
+                    .from('applications')
+                    .insert([testApplication])
+                    .select();
+
+                if (error) {
+                    console.error('❌ Error creating test application:', error);
+                    throw error;
+                }
+
+                console.log('✅ Test approved application created:', data[0]);
+                showToast('Test approved application created! You can now sign in with test@creator.com', 'success');
+                return data[0];
+            } catch (error) {
+                console.error('❌ Error creating test application:', error);
+                showToast('Failed to create test application: ' + error.message, 'error');
+            }
+        }
+
+        // Create Test Events with Future Dates
+        async function createTestEvents() {
+            console.log('🧪 Creating test events...');
+            
+            try {
+                const today = new Date();
+                const testEvents = [
+                    {
+                        venue: 'The Grand',
+                        hook: 'Exclusive rooftop party with NYC influencers',
+                        date: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week from now
+                        capacity: 50,
+                        description: 'Join us for an exclusive evening of networking and celebration',
+                        location_address: '123 Grand St, New York, NY 10013',
+                        status: 'active'
+                    },
+                    {
+                        venue: 'Skyline Lounge',
+                        hook: 'Sunset cocktails and city views',
+                        date: new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 2 weeks from now
+                        capacity: 30,
+                        description: 'Experience the best sunset views in Manhattan',
+                        location_address: '456 Sky Ave, New York, NY 10001',
+                        status: 'active'
+                    },
+                    {
+                        venue: 'Underground',
+                        hook: 'Late night beats and underground vibes',
+                        date: new Date(today.getTime() + 21 * 24 * 60 * 60 * 1000).toISOString(), // 3 weeks from now
+                        capacity: 75,
+                        description: 'The hottest underground party in the city',
+                        location_address: '789 Underground Blvd, New York, NY 10002',
+                        status: 'active'
+                    }
+                ];
+
+                const { data, error } = await supabaseClient
+                    .from('events')
+                    .insert(testEvents)
+                    .select();
+
+                if (error) {
+                    console.error('❌ Error creating test events:', error);
+                    throw error;
+                }
+
+                console.log('✅ Test events created:', data.length, 'events');
+                showToast(`${data.length} test events created successfully!`, 'success');
+                
+                // Reload dashboard events if we're on the dashboard
+                if (document.getElementById('dashboard').classList.contains('active')) {
+                    loadDashboardEvents();
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('❌ Error creating test events:', error);
+                showToast('Failed to create test events: ' + error.message, 'error');
+            }
+        }
+
+        // Load Dashboard Events
+        async function loadDashboardEvents() {
+            console.log('🎯 Loading dashboard events...');
+            try {
+                // First, try to get all active events (including past ones for testing)
+                const { data: events, error } = await supabaseClient
+                    .from('events')
+                    .select('*')
+                    .eq('status', 'active')
+                    .order('date', { ascending: true });
+
+                if (error) {
+                    console.error('❌ Error loading dashboard events:', error);
+                    throw error;
+                }
+                
+                console.log('✅ Dashboard events loaded:', events.length, 'events');
+                console.log('📅 Events data:', events);
+
+                const eventsGrid = document.querySelector('.events-grid');
+                
+                if (events.length === 0) {
+                    eventsGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #666666;">
+                            <p>No active events available at the moment.</p>
+                            <p>Check back soon for new opportunities!</p>
+                            <button onclick="createTestEvents()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #0066ff; color: white; border: none; border-radius: 4px; cursor: pointer;">Create Test Events</button>
+                            <button onclick="createTestApprovedApplication()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #00cc66; color: white; border: none; border-radius: 4px; cursor: pointer;">Create Test User</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                eventsGrid.innerHTML = events.map(event => {
+                    const eventDate = new Date(event.date);
+                    const currentParticipants = event.current_participants || 0;
+                    const capacity = event.capacity || 0;
+                    const spotsLeft = capacity - currentParticipants;
+                    const capacityPercentage = capacity > 0 ? (currentParticipants / capacity) * 100 : 0;
+                    
+                    let buttonText = 'Join';
+                    let buttonStyle = '';
+                    let buttonDisabled = '';
+                    
+                    if (spotsLeft <= 0) {
+                        buttonText = 'Full';
+                        buttonStyle = 'background: #666666;';
+                        buttonDisabled = 'disabled';
+                    }
+                    
+                    return `
+                        <div class="event-card" data-event-id="${event.id}">
+                            <div class="event-image">${event.venue}</div>
+                            <div class="event-content">
+                                <h3 class="venue-name">${event.venue}</h3>
+                                <p class="event-hook">${event.hook}</p>
+                                <div class="event-date" style="color: #666666; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                    ${eventDate.toLocaleDateString()} at ${eventDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                </div>
+                                <div class="capacity-meter">
+                                    <span class="capacity-text">${spotsLeft}/${capacity} spots left</span>
+                                    <div class="capacity-bar">
+                                        <div class="capacity-fill" style="width: ${capacityPercentage}%; background: ${capacityPercentage >= 80 ? '#ff4444' : capacityPercentage >= 60 ? '#ffaa00' : '#00cc66'};"></div>
+                                    </div>
+                                </div>
+                                <button class="event-button" ${buttonDisabled} style="${buttonStyle}" onclick="handleJoinEvent(${event.id})">${buttonText}</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                console.log('✅ Dashboard events rendered successfully');
+            } catch (error) {
+                console.error('❌ Error loading dashboard events:', error);
+                showToast('Failed to load events: ' + error.message, 'error');
+                
+                // Show fallback message
+                const eventsGrid = document.querySelector('.events-grid');
+                eventsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #ff4444;">
+                        <p>Failed to load events. Please try again later.</p>
+                        <button onclick="loadDashboardEvents()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #0066ff; color: white; border: none; border-radius: 4px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Handle Join Event
+        async function handleJoinEvent(eventId) {
+            console.log('🎯 Joining event:', eventId);
+            
+            try {
+                const { data: event, error } = await supabaseClient
+                    .from('events')
+                    .select('*')
+                    .eq('id', eventId)
+                    .single();
+
+                if (error) throw error;
+
+                // For now, just show the join modal with event data
+                const eventData = {
+                    id: eventId,
+                    venue: event.venue,
+                    hook: event.hook
+                };
+                
+                openJoinModal(eventData);
+            } catch (error) {
+                console.error('❌ Error joining event:', error);
+                showToast('Failed to join event: ' + error.message, 'error');
             }
         }
 
@@ -2691,6 +3604,47 @@
         // Make debug function available globally
         window.debugApp = debugApp;
         window.goToAdmin = goToAdmin;
+        window.createTestApprovedApplication = createTestApprovedApplication;
+        window.signOutUser = signOutUser;
+
+        // Check authentication state on load
+        async function checkAuthState() {
+            console.log('🔐 Checking authentication state...');
+            
+            try {
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                
+                if (error) {
+                    console.error('❌ Auth check error:', error);
+                    return;
+                }
+                
+                if (user) {
+                    console.log('✅ User is authenticated:', user);
+                    
+                    // Get user profile
+                    const profile = await getUserProfile(user.id);
+                    
+                    // Update last visit
+                    await updateLastVisit(user.id);
+                    
+                    currentUser = {
+                        id: user.id,
+                        email: user.email,
+                        name: profile.full_name || user.user_metadata?.full_name,
+                        instagram: profile.instagram_handle,
+                        profile: profile
+                    };
+                    
+                    updateUserInterface();
+                    console.log('✅ User session restored');
+                } else {
+                    console.log('📤 No authenticated user');
+                }
+            } catch (error) {
+                console.error('❌ Error checking auth state:', error);
+            }
+        }
 
         // Add keyboard shortcut for admin access
         document.addEventListener('keydown', (e) => {
