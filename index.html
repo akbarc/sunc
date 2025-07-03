@@ -275,6 +275,11 @@
             transform: translateY(-2px);
         }
 
+        .cta-button:hover {
+            background: #0052cc !important;
+            transform: translateY(-2px);
+        }
+
         .newsletter-section {
             padding: 80px 20px;
             background: #f8f9fa;
@@ -1142,6 +1147,9 @@
                 </div>
                 <p class="hero-subtitle">your key to unlocking New York City</p>
                 <p class="hero-description">a gateway that connects the city's most exciting venues with authentic & engaging locals to deliver real results</p>
+                <button class="cta-button" onclick="showPage('apply')" style="margin: 2rem 0; padding: 1rem 2rem; background: #0066ff; color: #ffffff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                    Apply to Join Society Unlocked
+                </button>
                 <div class="hero-image">
                     <div class="nyc-skyline">NYC Skyline BW</div>
                 </div>
@@ -1248,24 +1256,24 @@
                     <form onsubmit="submitApplication(event)">
                         <div class="form-group">
                             <label class="form-label">Full Name *</label>
-                            <input type="text" class="form-input" required>
+                            <input type="text" name="fullName" class="form-input" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Email *</label>
-                            <input type="email" class="form-input" required>
+                            <input type="email" name="email" class="form-input" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Phone Number *</label>
-                            <input type="tel" class="form-input" required>
+                            <input type="tel" name="phone" class="form-input" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Instagram Handle *</label>
-                            <input type="text" class="form-input" placeholder="@yourhandle" required>
+                            <input type="text" name="instagram" class="form-input" placeholder="@yourhandle" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Instagram Followers *</label>
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <select class="form-select" required style="flex: 1;">
+                                <select name="followerCount" class="form-select" required style="flex: 1;">
                                     <option value="">Select your follower count</option>
                                     <option value="1k-5k">1K - 5K</option>
                                     <option value="5k-10k">5K - 10K</option>
@@ -1281,7 +1289,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Content Category *</label>
-                            <select class="form-select" required>
+                            <select name="contentCategory" class="form-select" required>
                                 <option value="">Select your content category</option>
                                 <option value="lifestyle">Lifestyle</option>
                                 <option value="food">Food & Dining</option>
@@ -1294,11 +1302,11 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">City *</label>
-                            <input type="text" class="form-input" required>
+                            <input type="text" name="city" class="form-input" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Why do you want to join? *</label>
-                            <textarea class="form-input" rows="4" required placeholder="Tell us why you want to be part of Society Unlocked..."></textarea>
+                            <textarea name="motivation" class="form-input" rows="4" required placeholder="Tell us why you want to be part of Society Unlocked..."></textarea>
                         </div>
                         <button type="submit" class="submit-button">Submit Application</button>
                     </form>
@@ -1738,6 +1746,13 @@
             event.preventDefault();
             console.log('📝 Submitting application...');
             
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Submitting...';
+            submitButton.disabled = true;
+            
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData);
             
@@ -1749,7 +1764,11 @@
             
             if (missingFields.length > 0) {
                 console.log('❌ Missing fields:', missingFields);
-                showToast('Please fill in all required fields', 'error');
+                showToast('Please fill in all required fields: ' + missingFields.join(', '), 'error');
+                
+                // Reset button
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
                 return;
             }
             
@@ -1760,7 +1779,7 @@
                     email: data.email,
                     phone: data.phone,
                     instagram: data.instagram,
-                    follower_count: parseInt(data.followerCount.replace(/[^0-9]/g, '')),
+                    follower_count: parseInt(data.followerCount.replace(/[^0-9]/g, '') || '0'),
                     content_category: data.contentCategory,
                     city: data.city,
                     motivation: data.motivation
@@ -1784,6 +1803,10 @@
             } catch (error) {
                 console.error('❌ Error submitting application:', error);
                 showToast('Failed to submit application: ' + error.message, 'error');
+                
+                // Reset button on error
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
             }
         }
 
