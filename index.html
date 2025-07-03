@@ -2588,8 +2588,8 @@
             }
         }
 
-        // UI update functions
-        function updateUserInterface() {
+        // UI update functions for dashboard header
+        function updateDashboardHeader() {
             if (currentUser) {
                 // Update header with user info
                 const userSection = document.querySelector('.dashboard-header .logo + div');
@@ -3706,10 +3706,7 @@
             showToast('Member profile feature coming soon', 'info');
         }
 
-        // Auth modal function
-        function openAuthModal() {
-            showToast('Authentication feature coming soon', 'info');
-        }
+        // Auth modal function is defined earlier in the file at line 1998
 
         // Helper function to navigate to admin
         function goToAdmin() {
