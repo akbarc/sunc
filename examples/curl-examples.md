@@ -74,8 +74,7 @@ curl -X POST \
     "follower_count": 15000,
     "content_category": "lifestyle",
     "city": "New York",
-    "motivation": "I want to connect with local venues and create authentic content",
-    "best_content": "My rooftop sunset photos and restaurant reviews"
+    "motivation": "I want to connect with local venues and create authentic content"
   }'
 ```
 

@@ -938,16 +938,21 @@
                             <input type="text" class="form-input" placeholder="@yourhandle" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Follower Count *</label>
-                            <select class="form-select" required>
-                                <option value="">Select your follower count</option>
-                                <option value="1k-5k">1K - 5K</option>
-                                <option value="5k-10k">5K - 10K</option>
-                                <option value="10k-25k">10K - 25K</option>
-                                <option value="25k-50k">25K - 50K</option>
-                                <option value="50k-100k">50K - 100K</option>
-                                <option value="100k+">100K+</option>
-                            </select>
+                            <label class="form-label">Instagram Followers *</label>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <select class="form-select" required style="flex: 1;">
+                                    <option value="">Select your follower count</option>
+                                    <option value="1k-5k">1K - 5K</option>
+                                    <option value="5k-10k">5K - 10K</option>
+                                    <option value="10k-25k">10K - 25K</option>
+                                    <option value="25k-50k">25K - 50K</option>
+                                    <option value="50k-100k">50K - 100K</option>
+                                    <option value="100k+">100K+</option>
+                                </select>
+                                <div style="background: rgba(0, 102, 255, 0.1); border: 1px solid #0066ff; border-radius: 4px; padding: 0.5rem; cursor: help;" title="This refers to your Instagram follower count only">
+                                    <span style="color: #0066ff; font-size: 0.8rem;">ℹ️</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Content Category *</label>
@@ -968,11 +973,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Why do you want to join? *</label>
-                            <textarea class="form-input" rows="4" required placeholder="Tell us about your passion for creating content..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">What's your best content piece? *</label>
-                            <input type="url" class="form-input" required placeholder="URL to your best post/video">
+                            <textarea class="form-input" rows="4" required placeholder="Tell us why you want to be part of Society Unlocked..."></textarea>
                         </div>
                         <button type="submit" class="submit-button">Submit Application</button>
                     </form>
@@ -1617,7 +1618,7 @@
             const data = Object.fromEntries(formData);
             
             // Validate required fields
-            const requiredFields = ['fullName', 'email', 'phone', 'instagram', 'followerCount', 'contentCategory', 'city', 'motivation', 'bestContent'];
+            const requiredFields = ['fullName', 'email', 'phone', 'instagram', 'followerCount', 'contentCategory', 'city', 'motivation'];
             const missingFields = requiredFields.filter(field => !data[field]);
             
             if (missingFields.length > 0) {
