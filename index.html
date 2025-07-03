@@ -7,6 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Add Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Add Toast for notifications -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <style>
         * {
             margin: 0;
@@ -672,7 +677,7 @@
             margin-bottom: 2rem;
         }
 
-        /* Admin Console */
+        /* Admin Console -->
         .admin-container {
             min-height: 100vh;
             background: #000000;
@@ -701,20 +706,22 @@
 
         .admin-nav-button {
             background: none;
-            border: 1px solid #333333;
+            border: none;
             color: #666666;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .admin-nav-button.active,
         .admin-nav-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .admin-nav-button.active {
             background: #0066ff;
             color: #ffffff;
-            border-color: #0066ff;
         }
 
         .admin-section {
@@ -728,87 +735,40 @@
         /* Dashboard Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
             background: #111111;
-            border: 1px solid #333333;
             border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
+            padding: 1.5rem;
+            border: 1px solid #333333;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #0066ff;
+        .stat-card h3 {
+            font-size: 1rem;
+            color: #666666;
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            color: #666666;
-            font-weight: 500;
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
         }
 
-        .quick-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .quick-actions .action-button {
-            background: #0066ff;
-            color: #ffffff;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .quick-actions .action-button:hover {
-            background: #0052cc;
-        }
-
-        /* Section Headers */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .section-header h2 {
-            color: #ffffff;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .filter-controls select,
-        .search-controls input {
-            background: #111111;
-            border: 1px solid #333333;
-            color: #ffffff;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        /* Applications List */
-        .applications-list {
+        /* Applications Section */
+        .applications-grid {
             display: grid;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .application-card {
             background: #111111;
-            border: 1px solid #333333;
             border-radius: 12px;
             padding: 1.5rem;
+            border: 1px solid #333333;
         }
 
         .application-header {
@@ -819,21 +779,20 @@
         }
 
         .application-name {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            color: #ffffff;
         }
 
         .application-status {
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
         }
 
         .application-status.pending {
-            background: rgba(255, 170, 0, 0.2);
-            color: #ffaa00;
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
         }
 
         .application-status.approved {
@@ -844,6 +803,250 @@
         .application-status.denied {
             background: rgba(255, 68, 68, 0.2);
             color: #ff4444;
+        }
+
+        /* Members Section */
+        .members-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .member-card {
+            background: #111111;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            background: #0066ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .member-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .member-details p {
+            color: #666666;
+            font-size: 0.9rem;
+        }
+
+        /* Events Section */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-management-card {
+            background: #111111;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333333;
+        }
+
+        .event-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .event-management-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .event-management-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: #666666;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666666;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            background: #000000;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            color: #ffffff;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .submit-button,
+        .approve-button,
+        .deny-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-button {
+            background: #0066ff;
+            color: #ffffff;
+        }
+
+        .approve-button {
+            background: #00cc66;
+            color: #ffffff;
+        }
+
+        .deny-button {
+            background: #ff4444;
+            color: #ffffff;
+        }
+
+        /* Toast Container */
+        #toastContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        /* Missing admin styles */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .filter-group select,
+        .search-group input {
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .action-button {
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-button:hover {
+            background: #0052cc;
+        }
+
+        .review-button {
+            background: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .review-button:hover {
+            background: #0052cc;
+        }
+
+        .ban-button {
+            background: #ff4444;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ban-button:hover {
+            background: #cc3333;
         }
 
         .application-details {
@@ -864,66 +1067,7 @@
         .application-actions {
             display: flex;
             gap: 0.5rem;
-        }
-
-        .review-button {
-            background: #0066ff;
-            color: #ffffff;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .review-button:hover {
-            background: #0052cc;
-        }
-
-        /* Members List */
-        .members-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .member-card {
-            background: #111111;
-            border: 1px solid #333333;
-            border-radius: 12px;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .member-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .member-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #333333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .member-details h3 {
-            color: #ffffff;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .member-details p {
-            color: #666666;
-            font-size: 0.9rem;
+            justify-content: flex-end;
         }
 
         .member-actions {
@@ -931,45 +1075,9 @@
             gap: 0.5rem;
         }
 
-        .ban-button {
-            background: #ff4444;
-            color: #ffffff;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .ban-button:hover {
-            background: #cc3333;
-        }
-
-        /* Events List */
-        .events-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .event-management-card {
-            background: #111111;
-            border: 1px solid #333333;
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        .event-management-header {
+        .event-management-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .event-management-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #ffffff;
+            gap: 0.5rem;
         }
 
         .event-management-details {
@@ -984,107 +1092,6 @@
         }
 
         .event-management-detail strong {
-            color: #ffffff;
-        }
-
-        .event-management-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .add-event-button {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #0066ff;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .add-event-button:hover {
-            background: #0052cc;
-        }
-
-        /* Modal Styles */
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-header h2 {
-            color: #ffffff;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .review-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .approve-button {
-            background: #00cc66;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .approve-button:hover {
-            background: #00aa55;
-        }
-
-        .deny-button {
-            background: #ff4444;
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .deny-button:hover {
-            background: #cc3333;
-        }
-
-        #review-notes {
-            width: 100%;
-            background: #111111;
-            border: 1px solid #333333;
-            color: #ffffff;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .action-button {
-            background: none;
-            border: none;
-            color: #666666;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            margin-left: 0.5rem;
-        }
-
-        .action-button:hover {
-            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
         }
 
@@ -1119,7 +1126,7 @@
             <button class="nav-button" onclick="showPage('landing')">Home</button>
             <button class="nav-button" onclick="showPage('apply')">Apply</button>
             <button class="nav-button" onclick="showPage('dashboard')">Dashboard</button>
-            <button class="nav-button" onclick="showPage('admin')">Admin</button>
+                            <button class="nav-button" onclick="showPage('admin-page')">Admin</button>
             <a href="#" class="sign-in-button" onclick="openAuthModal()">Sign In</a>
         </div>
     </div>
@@ -1412,7 +1419,7 @@
     </div>
 
     <!-- Admin Console -->
-    <div id="admin" class="page">
+    <div id="admin-page" class="page">
         <div class="admin-container">
             <div class="admin-header">
                 <h1 class="admin-title">Admin Console</h1>
@@ -1424,39 +1431,32 @@
                 </div>
             </div>
 
-            <!-- Admin Dashboard -->
+            <!-- Dashboard Section -->
             <div id="admin-dashboard" class="admin-section active">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-number" id="total-events">0</div>
-                        <div class="stat-label">Total Events</div>
+                        <h3>Total Events</h3>
+                        <div id="total-events" class="stat-value">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="pending-applications">0</div>
-                        <div class="stat-label">Pending Applications</div>
+                        <h3>Total Members</h3>
+                        <div id="total-members" class="stat-value">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="total-members">0</div>
-                        <div class="stat-label">Total Members</div>
+                        <h3>Pending Applications</h3>
+                        <div id="pending-applications" class="stat-value">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="active-events">0</div>
-                        <div class="stat-label">Active Events</div>
+                        <h3>Active Events</h3>
+                        <div id="active-events" class="stat-value">0</div>
                     </div>
-                </div>
-                
-                <div class="quick-actions">
-                    <button class="action-button" onclick="showAdminSection('applications')">Review Applications</button>
-                    <button class="action-button" onclick="showAdminSection('events')">Manage Events</button>
-                    <button class="action-button" onclick="showAdminSection('members')">View Members</button>
                 </div>
             </div>
 
-            <!-- Applications Management -->
+            <!-- Applications Section -->
             <div id="admin-applications" class="admin-section">
                 <div class="section-header">
-                    <h2>Application Review</h2>
-                    <div class="filter-controls">
+                    <div class="filter-group">
                         <select id="application-filter" onchange="filterApplications()">
                             <option value="all">All Applications</option>
                             <option value="pending">Pending</option>
@@ -1465,449 +1465,147 @@
                         </select>
                     </div>
                 </div>
-                
-                <div class="applications-list" id="applications-list">
-                    <!-- Applications will be loaded here -->
-                </div>
+                <div id="applications-list" class="applications-grid"></div>
             </div>
 
-            <!-- Members Management -->
+            <!-- Members Section -->
             <div id="admin-members" class="admin-section">
                 <div class="section-header">
-                    <h2>Member Management</h2>
-                    <div class="search-controls">
+                    <div class="search-group">
                         <input type="text" id="member-search" placeholder="Search members..." onkeyup="searchMembers()">
                     </div>
                 </div>
-                
-                <div class="members-list" id="members-list">
-                    <!-- Members will be loaded here -->
-                </div>
+                <div id="members-list" class="members-grid"></div>
             </div>
 
-            <!-- Events Management -->
+            <!-- Events Section -->
             <div id="admin-events" class="admin-section">
                 <div class="section-header">
-                    <h2>Event Management</h2>
-                    <button class="add-event-button" onclick="openAddEventModal()">+ Add Event</button>
+                    <button class="action-button" onclick="openAddEventModal()">Add New Event</button>
                 </div>
-                
-                <div class="events-list" id="events-list">
-                    <!-- Events will be loaded here -->
+                <div id="events-list" class="events-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Review Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Review Application</h2>
+                <button class="close-button" onclick="closeApplicationModal()">&times;</button>
+            </div>
+            <div id="application-details"></div>
+            <div class="review-form">
+                <textarea id="review-notes" placeholder="Add review notes..."></textarea>
+                <div class="modal-actions">
+                    <button class="deny-button" onclick="denyApplication()">Deny</button>
+                    <button class="approve-button" onclick="approveApplication()">Approve</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Add Event Modal -->
-    <div id="addEventModal" class="modal" style="display: none;">
+    <div id="addEventModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add New Event</h2>
-                <button class="close-button" onclick="closeAddEventModal()">✕</button>
+                <button class="close-button" onclick="closeAddEventModal()">&times;</button>
             </div>
-            
-            <form id="addEventForm" onsubmit="submitNewEvent(event)">
+            <form onsubmit="submitNewEvent(event)">
                 <div class="form-group">
-                    <label>Venue Name *</label>
-                    <input type="text" name="venue" required>
+                    <label for="venue">Venue Name</label>
+                    <input type="text" id="venue" name="venue" required>
                 </div>
-                
                 <div class="form-group">
-                    <label>Event Hook *</label>
-                    <input type="text" name="hook" required>
+                    <label for="hook">Hook</label>
+                    <input type="text" id="hook" name="hook" required>
                 </div>
-                
                 <div class="form-group">
-                    <label>Date & Time *</label>
-                    <input type="datetime-local" name="date" required>
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
                 </div>
-                
                 <div class="form-group">
-                    <label>Capacity *</label>
-                    <input type="number" name="capacity" min="1" required>
+                    <label for="capacity">Capacity</label>
+                    <input type="number" id="capacity" name="capacity" required min="1">
                 </div>
-                
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea name="description" rows="3"></textarea>
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required></textarea>
                 </div>
-                
                 <div class="form-group">
-                    <label>Location Address</label>
-                    <input type="text" name="location_address">
+                    <label for="location_address">Location Address</label>
+                    <input type="text" id="location_address" name="location_address" required>
                 </div>
-                
-                <button type="submit" class="submit-button">Create Event</button>
+                <div class="modal-actions">
+                    <button type="submit" class="submit-button">Create Event</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- Application Review Modal -->
-    <div id="applicationModal" class="modal" style="display: none;">
+    <!-- Edit Event Modal -->
+    <div id="editEventModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Review Application</h2>
-                <button class="close-button" onclick="closeApplicationModal()">✕</button>
+                <h2>Edit Event</h2>
+                <button class="close-button" onclick="document.getElementById('editEventModal').style.display='none'">&times;</button>
             </div>
-            
-            <div id="application-details">
-                <!-- Application details will be loaded here -->
-            </div>
-            
-            <div class="review-actions">
-                <button class="approve-button" onclick="approveApplication()">Approve</button>
-                <button class="deny-button" onclick="denyApplication()">Deny</button>
-                <textarea id="review-notes" placeholder="Add review notes (optional)"></textarea>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification System -->
-    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
-
-    <!-- Auth Modal -->
-    <div id="authModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <button class="close-button" onclick="closeAuthModal()">✕</button>
-            <h2 class="modal-title">Sign In</h2>
-            
-            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+            <form id="editEventForm" onsubmit="updateEvent(event)">
+                <input type="hidden" name="id">
                 <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <div class="input-wrapper">
-                        <div class="input-icon">📧</div>
-                        <input type="email" class="form-input" id="authEmail" required placeholder="your@email.com">
-                    </div>
+                    <label for="edit-venue">Venue Name</label>
+                    <input type="text" id="edit-venue" name="venue" required>
                 </div>
-                
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="input-wrapper">
-                        <div class="input-icon">🔒</div>
-                        <input type="password" class="form-input" id="authPassword" required placeholder="Enter your password">
-                        <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
-                    </div>
+                    <label for="edit-hook">Hook</label>
+                    <input type="text" id="edit-hook" name="hook" required>
                 </div>
-                
-                <button type="submit" class="submit-button">Sign In</button>
-                <button type="button" class="forgot-link" onclick="handleForgotPassword()">Forgot password?</button>
+                <div class="form-group">
+                    <label for="edit-date">Date</label>
+                    <input type="date" id="edit-date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-capacity">Capacity</label>
+                    <input type="number" id="edit-capacity" name="capacity" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-location_address">Location Address</label>
+                    <input type="text" id="edit-location_address" name="location_address" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-status">Status</label>
+                    <select id="edit-status" name="status" required>
+                        <option value="active">Active</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="submit-button">Update Event</button>
+                </div>
             </form>
-            
-            <div class="divider">
-                <span>or</span>
-            </div>
-            
-            <button class="instagram-button" onclick="handleInstagramLogin()">
-                📷 Log in with Instagram
-            </button>
-            
-            <div class="signup-prompt">
-                Don't have an account? 
-                <button type="button" class="signup-link" onclick="showPage('apply')">Apply to join</button>
-            </div>
         </div>
     </div>
 
-    <!-- Join Confirmation Modal -->
-    <div id="joinModal" class="modal" style="display: none;">
+    <!-- Event Participants Modal -->
+    <div id="eventParticipantsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Join Event</h2>
-                <button class="close-button" onclick="closeJoinModal()">✕</button>
+                <h2>Event Participants</h2>
+                <button class="close-button" onclick="document.getElementById('eventParticipantsModal').style.display='none'">&times;</button>
             </div>
-            
-            <div id="joinModalContent">
-                <h3 id="eventVenue" style="margin-bottom: 1rem;"></h3>
-                <p id="eventHook" style="color: #cccccc; margin-bottom: 1.5rem;"></p>
-                
-                <h4 style="margin-bottom: 1rem;">Guidelines</h4>
-                <ul class="guidelines-list">
-                    <li class="guideline-item">Post at least one Instagram story during the event</li>
-                    <li class="guideline-item">Share a Google Review within 48 hours</li>
-                    <li class="guideline-item">Tag @SocietyUnlocked in your content</li>
-                </ul>
-                
-                <div class="penalty-clause">
-                    <strong>Penalty:</strong> No-shows or failure to complete deliverables may result in suspension from future events.
-                </div>
-                
-                <div class="checkbox-container">
-                    <input type="checkbox" id="guidelinesCheck" class="guidelines-checkbox">
-                    <label for="guidelinesCheck">
-                        I accept the guidelines and understand the penalty clause
-                    </label>
-                </div>
-                
-                <button class="modal-button" onclick="confirmJoin()" disabled id="confirmJoinButton">
-                    Accept & Reserve
-                </button>
-            </div>
+            <div id="event-participants-list"></div>
         </div>
     </div>
 
-    <style>
-        /* Toast Styles */
-        .toast {
-            background: #1a1a1a;
-            color: #ffffff;
-            border: 1px solid #333333;
-            border-radius: 8px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 0.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s ease;
-            max-width: 300px;
-        }
-
-        .toast.success {
-            border-left: 4px solid #00cc66;
-        }
-
-        .toast.error {
-            border-left: 4px solid #ff4444;
-        }
-
-        .toast.info {
-            border-left: 4px solid #0066ff;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Modal Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 2rem;
-        }
-
-        .modal-content {
-            background: #111111;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 400px;
-            width: 100%;
-            position: relative;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: #666666;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background 0.2s ease;
-            font-size: 1.2rem;
-        }
-
-        .close-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666666;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #666666;
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 4px;
-            transition: color 0.2s ease;
-        }
-
-        .password-toggle:hover {
-            color: #ffffff;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            color: #666666;
-            font-size: 0.9rem;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #333333;
-        }
-
-        .divider span {
-            padding: 0 1rem;
-        }
-
-        .instagram-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: #ffffff;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .instagram-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(220, 39, 67, 0.3);
-        }
-
-        .forgot-link {
-            background: none;
-            border: none;
-            color: #0066ff;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-top: 0.5rem;
-            width: 100%;
-        }
-
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
-
-        .signup-prompt {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #333333;
-            color: #666666;
-            font-size: 0.9rem;
-        }
-
-        .signup-link {
-            background: none;
-            border: none;
-            color: #0066ff;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .signup-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Join Modal Specific Styles */
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .guidelines-list {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .guideline-item {
-            padding: 1rem;
-            background: #000000;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            border-left: 3px solid #0066ff;
-        }
-
-        .penalty-clause {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid #ff4444;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            color: #ff4444;
-            font-size: 0.9rem;
-        }
-
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .guidelines-checkbox {
-            width: 18px;
-            height: 18px;
-            accent-color: #0066ff;
-        }
-
-        .modal-button {
-            width: 100%;
-            padding: 1rem;
-            background: #0066ff;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .modal-button:hover:not(:disabled) {
-            background: #0052cc;
-        }
-
-        .modal-button:disabled {
-            background: #666666;
-            cursor: not-allowed;
-        }
-
-        /* Event card states */
-        .event-card.reserved {
-            border-color: #0066ff;
-        }
-
-        .event-card.completed {
-            border-color: #00cc66;
-        }
-    </style>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
 
     <script>
         // Global variables
@@ -1916,9 +1614,24 @@
         let currentAdminSection = 'dashboard';
 
         // Initialize Supabase client
-        const supabaseUrl = 'https://vdwarnobmgkljagpvttv.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const { createClient } = supabase;
+        const supabaseClient = createClient(
+            'https://vdwarnobmgkljagpvttv.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ'
+        );
+
+        // Toast notification helper
+        function showToast(message, type = 'info') {
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: type === 'error' ? "#ff4b4b" : "#00b894"
+                }
+            }).showToast();
+        }
 
         // Page navigation
         function showPage(pageId) {
@@ -1926,23 +1639,6 @@
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
-        }
-
-        // Toast notification system
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            const container = document.getElementById('toastContainer');
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    container.removeChild(toast);
-                }, 300);
-            }, 4000);
         }
 
         // Authentication functions
@@ -2188,10 +1884,38 @@
 
         // Initialize admin console
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.location.hash === '#admin') {
+            console.log('DOM loaded, checking hash:', window.location.hash);
+            if (window.location.hash === '#admin' || window.location.hash === '#admin-page') {
+                console.log('Showing admin page');
+                showPage('admin-page');
                 showAdminSection('dashboard');
             }
+            
+            // Test Supabase connection
+            console.log('Testing Supabase connection...');
+            testSupabaseConnection();
         });
+
+        // Test function to verify Supabase connection
+        async function testSupabaseConnection() {
+            try {
+                console.log('Supabase client:', supabaseClient);
+                const { data, error } = await supabaseClient
+                    .from('events')
+                    .select('count', { count: 'exact', head: true });
+                
+                if (error) {
+                    console.error('Supabase connection error:', error);
+                    showToast('Database connection failed: ' + error.message, 'error');
+                } else {
+                    console.log('Supabase connection successful');
+                    showToast('Database connected successfully', 'success');
+                }
+            } catch (err) {
+                console.error('Supabase test failed:', err);
+                showToast('Database connection failed: ' + err.message, 'error');
+            }
+        }
 
         // Initialize application
         document.addEventListener('DOMContentLoaded', function() {
@@ -2233,26 +1957,41 @@
 
         // Dashboard Functions
         async function loadDashboardStats() {
+            console.log('Loading dashboard stats...');
             try {
+                const results = await Promise.all([
+                    supabaseClient.from('events').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('applications').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('profiles').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'pending')
+                ]);
+
+                console.log('Dashboard results:', results);
+
                 const [
                     { count: totalEvents },
                     { count: totalApplications },
                     { count: totalMembers },
                     { count: pendingApplications }
-                ] = await Promise.all([
-                    supabase.from('events').select('*', { count: 'exact', head: true }),
-                    supabase.from('applications').select('*', { count: 'exact', head: true }),
-                    supabase.from('profiles').select('*', { count: 'exact', head: true }),
-                    supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'pending')
-                ]);
+                ] = results;
 
-                document.getElementById('total-events').textContent = totalEvents;
-                document.getElementById('total-members').textContent = totalMembers;
-                document.getElementById('pending-applications').textContent = pendingApplications;
-                document.getElementById('active-events').textContent = totalEvents;
+                console.log('Stats:', { totalEvents, totalApplications, totalMembers, pendingApplications });
+
+                document.getElementById('total-events').textContent = totalEvents || 0;
+                document.getElementById('total-members').textContent = totalMembers || 0;
+                document.getElementById('pending-applications').textContent = pendingApplications || 0;
+                document.getElementById('active-events').textContent = totalEvents || 0;
+                
+                showToast('Dashboard stats loaded successfully', 'success');
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
-                showToast('Failed to load dashboard stats', 'error');
+                showToast('Failed to load dashboard stats: ' + error.message, 'error');
+                
+                // Set default values
+                document.getElementById('total-events').textContent = '0';
+                document.getElementById('total-members').textContent = '0';
+                document.getElementById('pending-applications').textContent = '0';
+                document.getElementById('active-events').textContent = '0';
             }
         }
 
@@ -2304,7 +2043,7 @@
         async function filterApplications() {
             const status = document.getElementById('application-filter').value;
             try {
-                const query = supabase.from('applications').select('*');
+                const query = supabaseClient.from('applications').select('*');
                 if (status !== 'all') {
                     query.eq('status', status);
                 }
@@ -2720,7 +2459,7 @@
             }
 
             try {
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('events')
                     .delete()
                     .eq('id', eventId);
@@ -2733,6 +2472,12 @@
                 console.error('Error deleting event:', error);
                 showToast('Failed to delete event', 'error');
             }
+        }
+
+        // Missing function implementations
+        function viewMemberProfile(memberId) {
+            // Placeholder for member profile viewing
+            showToast('Member profile feature coming soon', 'info');
         }
     </script>
 </body>
