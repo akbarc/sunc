@@ -1,11 +1,11 @@
+node_modules/
 src/
 public/
-node_modules/
+.git/
 *.md
 demo.html
 auth-modal.html
 join-modal.html
-.git/
 database/
 scripts/
 examples/ 
