@@ -74,6 +74,8 @@ Society Unlocked is a platform that rewards creators for fueling culture. The v0
 - **React Hook Form** - Form handling and validation
 - **React Hot Toast** - Toast notifications
 - **Lucide React** - Icon library
+- **Supabase** - PostgreSQL database and authentication
+- **PostgreSQL** - Primary database
 
 ## 📁 Project Structure
 
@@ -86,8 +88,13 @@ src/
 │   ├── CreatorDashboard.js     # Event grid and profile panel
 │   ├── AdminConsole.js         # Event and roster management
 │   └── AuthModal.js            # Sign-in modal
+├── config/
+│   ├── database.js             # Supabase database configuration
+│   └── supabase-cdn.js         # CDN database configuration
 ├── App.js                      # Main app with routing
 └── index.js                    # React entry point
+examples/
+└── curl-examples.md            # CURL API examples
 ```
 
 ## 🚀 Getting Started
@@ -131,14 +138,109 @@ npm run build
 4. **Edit Event** → Update event details
 5. **Manage Creators** → Ban/unban creators as needed
 
-## 🔧 Configuration
+## 🗄️ Database Setup
 
-### Environment Variables
-Create a `.env` file in the root directory:
+### Supabase Configuration
+
+The application uses Supabase as the backend database. All credentials are configured in `.env.local`:
+
+```bash
+# Supabase PostgreSQL Configuration
+POSTGRES_URL="postgres://postgres.vdwarnobmgkljagpvttv:YyiPyKrDDtfrr79k@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+SUPABASE_URL="https://vdwarnobmgkljagpvttv.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
+```
+
+### Database Connection Methods
+
+#### 1. Node.js (Recommended)
+```javascript
+// src/config/database.js
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
+```
+
+#### 2. CDN/Client-Side
+```html
+<!-- Add to your HTML -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="src/config/supabase-cdn.js"></script>
+```
+
+#### 3. CURL Examples
+```bash
+# Get all events
+curl -X GET \
+  "https://vdwarnobmgkljagpvttv.supabase.co/rest/v1/events?select=*" \
+  -H "apikey: your-anon-key" \
+  -H "Authorization: Bearer your-anon-key"
+```
+
+### Database Schema
+
+The application expects the following tables in your Supabase database:
+
+#### Events Table
+```sql
+CREATE TABLE events (
+  id SERIAL PRIMARY KEY,
+  venue VARCHAR(255) NOT NULL,
+  hook TEXT NOT NULL,
+  date TIMESTAMP WITH TIME ZONE,
+  capacity INTEGER DEFAULT 50,
+  status VARCHAR(50) DEFAULT 'active',
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### Applications Table
+```sql
+CREATE TABLE applications (
+  id SERIAL PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(50),
+  instagram VARCHAR(100),
+  follower_count INTEGER,
+  content_category VARCHAR(100),
+  city VARCHAR(100),
+  motivation TEXT,
+  best_content TEXT,
+  status VARCHAR(50) DEFAULT 'pending',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+#### Event Participants Table
+```sql
+CREATE TABLE event_participants (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER REFERENCES events(id),
+  user_id UUID REFERENCES auth.users(id),
+  status VARCHAR(50) DEFAULT 'joined',
+  joined_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  proof_uploaded BOOLEAN DEFAULT FALSE
+);
+```
+
+## 🔧 Configuration
+Create a `.env.local` file in the root directory:
 
 ```env
-REACT_APP_API_URL=your_api_url_here
-REACT_APP_INSTAGRAM_CLIENT_ID=your_instagram_client_id
+# Supabase Configuration
+POSTGRES_URL="postgres://postgres.vdwarnobmgkljagpvttv:YyiPyKrDDtfrr79k@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+SUPABASE_URL="https://vdwarnobmgkljagpvttv.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDc5MDUsImV4cCI6MjA2NzA4MzkwNX0.xH0T_JtxngQjodqGxQlH-waRuNlFv4aXLY_glhwB8zQ"
+SUPABASE_SERVICE_ROLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkd2Fybm9ibWdrbGphZ3B2dHR2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTUwNzkwNSwiZXhwIjoyMDY3MDgzOTA1fQ.E4V7QkIDBV3VcbL0iiFlALpkgQGPaydldbLj6gEsw6A"
+
+# Application Configuration
+NODE_ENV=development
+PORT=3000
 ```
 
 ### Customization

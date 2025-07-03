@@ -14,7 +14,10 @@
     "styled-components": "^5.3.5",
     "react-hook-form": "^7.34.2",
     "react-hot-toast": "^2.4.0",
-    "lucide-react": "^0.263.1"
+    "lucide-react": "^0.263.1",
+    "@supabase/supabase-js": "^2.39.0",
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
