@@ -169,4 +169,5 @@ CREATE POLICY "Newsletter subscribers can be viewed by admins" ON newsletter_sub
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
 
-RAISE NOTICE 'Migration completed successfully!'; 
+-- Migration completed successfully!
+SELECT 'Migration completed successfully!' as status; 
