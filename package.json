@@ -1,0 +1,13 @@
+{
+  "name": "society-unlocked-static",
+  "version": "1.0.0",
+  "description": "Society Unlocked - Static HTML Application",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build complete - serving static files'",
+    "start": "echo 'Starting static server'"
+  },
+  "keywords": ["static", "html"],
+  "author": "Society Unlocked",
+  "license": "MIT"
+} 
