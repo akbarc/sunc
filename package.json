@@ -4,7 +4,7 @@
   "description": "Society Unlocked - Static HTML Application",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'Build complete - serving static files'",
+    "build": "mkdir -p public && cp index.html public/ && cp auth-modal.html public/ && cp join-modal.html public/ && cp demo.html public/ && cp -r src public/ && cp -r database public/ && cp -r scripts public/ && cp -r examples public/ && echo 'Build complete - static files copied to public/'",
     "start": "echo 'Starting static server'"
   },
   "keywords": ["static", "html"],

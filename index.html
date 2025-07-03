@@ -2210,6 +2210,9 @@
             console.log('👤 Creating user profile for:', userId);
             
             try {
+                // Check if this is the hardcoded admin email
+                const isAdmin = application.email === 'hello@societyunlocked.com';
+                
                 const { data, error } = await supabaseClient
                     .from('profiles')
                     .insert([{
@@ -2220,6 +2223,7 @@
                         content_category: application.content_category,
                         city: application.city,
                         is_verified: true, // They're approved, so they're verified
+                        is_admin: isAdmin, // Auto-admin for hello@societyunlocked.com
                         last_visit: new Date().toISOString()
                     }])
                     .select();
@@ -2230,6 +2234,9 @@
                 }
                 
                 console.log('✅ Profile created:', data[0]);
+                if (isAdmin) {
+                    console.log('👑 Admin privileges granted for hello@societyunlocked.com');
+                }
                 return data[0];
             } catch (error) {
                 console.error('❌ Error creating profile:', error);
@@ -2267,7 +2274,14 @@
                     profile: profile
                 };
                 
-                showToast('Signed in successfully!', 'success');
+                const isAdmin = profile.is_admin;
+                const successMessage = isAdmin ? 'Signed in successfully with admin privileges!' : 'Signed in successfully!';
+                showToast(successMessage, 'success');
+                
+                if (isAdmin) {
+                    console.log('👑 Admin user signed in');
+                }
+                
                 closeAuthModal();
                 showPage('dashboard');
                 updateUserInterface();
@@ -2862,6 +2876,43 @@
             }
         }
 
+        // Create Admin Application (for hello@societyunlocked.com)
+        async function createAdminApplication() {
+            console.log('👑 Creating admin application...');
+            
+            try {
+                const adminApplication = {
+                    full_name: 'Society Unlocked Admin',
+                    email: 'hello@societyunlocked.com',
+                    phone: '+1234567890',
+                    instagram: '@societyunlocked',
+                    follower_count: 50000,
+                    content_category: 'Business & Events',
+                    city: 'New York City',
+                    motivation: 'Managing the Society Unlocked platform and connecting venues with creators.',
+                    status: 'approved',
+                    reviewed_at: new Date().toISOString()
+                };
+
+                const { data, error } = await supabaseClient
+                    .from('applications')
+                    .insert([adminApplication])
+                    .select();
+
+                if (error) {
+                    console.error('❌ Error creating admin application:', error);
+                    throw error;
+                }
+
+                console.log('✅ Admin approved application created:', data[0]);
+                showToast('Admin application created! You can now sign in with hello@societyunlocked.com and password 1234', 'success');
+                return data[0];
+            } catch (error) {
+                console.error('❌ Error creating admin application:', error);
+                showToast('Failed to create admin application: ' + error.message, 'error');
+            }
+        }
+
         // Create Test Events with Future Dates
         async function createTestEvents() {
             console.log('🧪 Creating test events...');
@@ -3041,6 +3092,16 @@
         async function loadApplications() {
             try {
                 console.log('📋 Loading applications...');
+                
+                // Check if user is admin first
+                const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+                
+                if (authError || !user) {
+                    console.log('❌ Not authenticated, cannot load applications');
+                    showToast('Please sign in to view applications', 'error');
+                    return;
+                }
+                
                 const { data: applications, error } = await supabaseClient
                     .from('applications')
                     .select('*')
@@ -3048,6 +3109,11 @@
 
                 if (error) {
                     console.error('❌ Error loading applications:', error);
+                    if (error.message.includes('row-level security policy')) {
+                        showToast('Access denied. You need admin privileges. Run makeCurrentUserAdmin() in console.', 'error');
+                        console.log('💡 To become admin, run: makeCurrentUserAdmin()');
+                        return;
+                    }
                     throw error;
                 }
                 
@@ -3194,24 +3260,62 @@
             if (!currentApplicationId) return;
             
             try {
+                // Check if user is admin first
+                const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+                
+                if (authError || !user) {
+                    showToast('Please sign in to approve applications', 'error');
+                    return;
+                }
+                
+                // Get current user profile to check admin status
+                const { data: profile, error: profileError } = await supabaseClient
+                    .from('profiles')
+                    .select('is_admin')
+                    .eq('id', user.id)
+                    .single();
+                
+                if (profileError) {
+                    console.error('❌ Error checking admin status:', profileError);
+                    showToast('Error checking admin permissions', 'error');
+                    return;
+                }
+                
+                if (!profile || !profile.is_admin) {
+                    showToast('You need admin privileges to approve applications. Run makeCurrentUserAdmin() in console.', 'error');
+                    console.log('💡 To become admin, run: makeCurrentUserAdmin()');
+                    return;
+                }
+                
+                console.log('✅ User has admin privileges, proceeding with approval...');
+                
                 const reviewNotes = document.getElementById('review-notes').value;
                 const { error } = await supabaseClient
                     .from('applications')
                     .update({
                         status: 'approved',
                         review_notes: reviewNotes,
-                        reviewed_at: new Date().toISOString()
+                        reviewed_at: new Date().toISOString(),
+                        reviewed_by: user.id
                     })
                     .eq('id', currentApplicationId);
 
-                if (error) throw error;
+                if (error) {
+                    console.error('❌ Database error approving application:', error);
+                    throw error;
+                }
 
                 showToast('Application approved successfully', 'success');
                 closeApplicationModal();
                 loadApplications();
+                loadDashboardStats(); // Refresh stats
             } catch (error) {
                 console.error('Error approving application:', error);
-                showToast('Failed to approve application', 'error');
+                if (error.message.includes('new row violates row-level security policy')) {
+                    showToast('Permission denied. You need admin privileges. Run makeCurrentUserAdmin() in console.', 'error');
+                } else {
+                    showToast('Failed to approve application: ' + error.message, 'error');
+                }
             }
         }
 
@@ -3219,24 +3323,62 @@
             if (!currentApplicationId) return;
             
             try {
+                // Check if user is admin first
+                const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+                
+                if (authError || !user) {
+                    showToast('Please sign in to deny applications', 'error');
+                    return;
+                }
+                
+                // Get current user profile to check admin status
+                const { data: profile, error: profileError } = await supabaseClient
+                    .from('profiles')
+                    .select('is_admin')
+                    .eq('id', user.id)
+                    .single();
+                
+                if (profileError) {
+                    console.error('❌ Error checking admin status:', profileError);
+                    showToast('Error checking admin permissions', 'error');
+                    return;
+                }
+                
+                if (!profile || !profile.is_admin) {
+                    showToast('You need admin privileges to deny applications. Run makeCurrentUserAdmin() in console.', 'error');
+                    console.log('💡 To become admin, run: makeCurrentUserAdmin()');
+                    return;
+                }
+                
+                console.log('✅ User has admin privileges, proceeding with denial...');
+                
                 const reviewNotes = document.getElementById('review-notes').value;
                 const { error } = await supabaseClient
                     .from('applications')
                     .update({
                         status: 'denied',
                         review_notes: reviewNotes,
-                        reviewed_at: new Date().toISOString()
+                        reviewed_at: new Date().toISOString(),
+                        reviewed_by: user.id
                     })
                     .eq('id', currentApplicationId);
 
-                if (error) throw error;
+                if (error) {
+                    console.error('❌ Database error denying application:', error);
+                    throw error;
+                }
 
                 showToast('Application denied successfully', 'success');
                 closeApplicationModal();
                 loadApplications();
+                loadDashboardStats(); // Refresh stats
             } catch (error) {
                 console.error('Error denying application:', error);
-                showToast('Failed to deny application', 'error');
+                if (error.message.includes('new row violates row-level security policy')) {
+                    showToast('Permission denied. You need admin privileges. Run makeCurrentUserAdmin() in console.', 'error');
+                } else {
+                    showToast('Failed to deny application: ' + error.message, 'error');
+                }
             }
         }
 
@@ -3577,13 +3719,40 @@
         }
 
         // Debug helper function
-        function debugApp() {
+        async function debugApp() {
             console.log('🔍 === DEBUG INFORMATION ===');
             console.log('📊 Supabase Client:', supabaseClient);
             console.log('👤 Current User:', currentUser);
             console.log('🔧 Current Admin Section:', currentAdminSection);
             console.log('📄 Current Page:', document.querySelector('.page.active')?.id);
             console.log('🎯 Selected Event:', selectedEvent);
+            
+            // Check admin status
+            try {
+                const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+                
+                if (user) {
+                    const { data: profile, error: profileError } = await supabaseClient
+                        .from('profiles')
+                        .select('is_admin, full_name')
+                        .eq('id', user.id)
+                        .single();
+                    
+                    if (profile) {
+                        console.log('👑 Admin Status:', profile.is_admin ? '✅ ADMIN' : '❌ Not Admin');
+                        console.log('🏷️ User Name:', profile.full_name);
+                        if (!profile.is_admin) {
+                            console.log('💡 To become admin, run: makeCurrentUserAdmin()');
+                        }
+                    } else {
+                        console.log('❌ No profile found for user');
+                    }
+                } else {
+                    console.log('📤 No authenticated user');
+                }
+            } catch (error) {
+                console.error('❌ Error checking admin status:', error);
+            }
             
             // Test all admin sections
             const adminSections = document.querySelectorAll('.admin-section');
@@ -3601,11 +3770,53 @@
             testSupabaseConnection();
         }
 
+        // Function to make current user admin (for testing)
+        async function makeCurrentUserAdmin() {
+            console.log('🔧 Making current user admin...');
+            
+            try {
+                const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+                
+                if (authError || !user) {
+                    showToast('Please sign in first', 'error');
+                    return;
+                }
+                
+                console.log('👤 Current user:', user.id);
+                
+                // Update user profile to make them admin
+                const { error } = await supabaseClient
+                    .from('profiles')
+                    .update({ is_admin: true })
+                    .eq('id', user.id);
+                
+                if (error) {
+                    console.error('❌ Error making user admin:', error);
+                    showToast('Failed to make user admin: ' + error.message, 'error');
+                    return;
+                }
+                
+                console.log('✅ User is now admin');
+                showToast('You are now an admin! Refresh the page to see admin features.', 'success');
+                
+                // Update current user object
+                if (currentUser) {
+                    currentUser.profile.is_admin = true;
+                }
+                
+            } catch (error) {
+                console.error('❌ Error in makeCurrentUserAdmin:', error);
+                showToast('Error making user admin: ' + error.message, 'error');
+            }
+        }
+
         // Make debug function available globally
         window.debugApp = debugApp;
         window.goToAdmin = goToAdmin;
         window.createTestApprovedApplication = createTestApprovedApplication;
+        window.createAdminApplication = createAdminApplication;
         window.signOutUser = signOutUser;
+        window.makeCurrentUserAdmin = makeCurrentUserAdmin;
 
         // Check authentication state on load
         async function checkAuthState() {
