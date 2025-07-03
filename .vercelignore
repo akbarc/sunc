@@ -1,0 +1,11 @@
+src/
+public/
+node_modules/
+*.md
+demo.html
+auth-modal.html
+join-modal.html
+.git/
+database/
+scripts/
+examples/ 
