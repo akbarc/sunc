@@ -2285,6 +2285,11 @@
                 closeAuthModal();
                 showPage('dashboard');
                 updateUserInterface();
+                
+                // Refresh events to show current participation status
+                setTimeout(() => {
+                    loadDashboardEvents();
+                }, 500);
             } catch (error) {
                 console.error('❌ Sign in error:', error);
                 throw error;
@@ -2545,17 +2550,10 @@
                 } else {
                     console.log('✅ Joined event successfully:', data[0]);
                     
-                    // Update UI
-                    const eventCard = document.querySelector(`[data-event-id="${selectedEvent.id}"]`);
-                    if (eventCard) {
-                        eventCard.classList.add('reserved');
-                        const button = eventCard.querySelector('.event-button');
-                        button.textContent = 'Upload Proof';
-                        button.style.background = '#00cc66';
-                        button.onclick = () => handleUploadProof(selectedEvent.id);
-                    }
-                    
                     showToast('Reserved. See you there!', 'success');
+                    
+                    // Refresh the events to update capacity and button states
+                    await loadDashboardEvents();
                 }
                 
                 closeJoinModal();
@@ -2568,17 +2566,38 @@
             }
         }
 
-        function handleUploadProof(eventId) {
-            showToast('Proof uploaded successfully!', 'success');
-            
-            const eventCard = document.querySelector(`[data-event-id="${eventId}"]`);
-            if (eventCard) {
-                eventCard.classList.remove('reserved');
-                eventCard.classList.add('completed');
-                const button = eventCard.querySelector('.event-button');
-                button.textContent = 'Completed';
-                button.style.background = '#333333';
-                button.disabled = true;
+        async function handleUploadProof(eventId) {
+            if (!currentUser) {
+                showToast('Please sign in to upload proof', 'error');
+                return;
+            }
+
+            try {
+                console.log('📸 Uploading proof for event:', eventId);
+                
+                // Update participation status to completed
+                const { error } = await supabaseClient
+                    .from('event_participants')
+                    .update({ 
+                        status: 'completed',
+                        proof_uploaded: true,
+                        proof_submitted_at: new Date().toISOString()
+                    })
+                    .eq('event_id', eventId)
+                    .eq('user_id', currentUser.id);
+
+                if (error) {
+                    console.error('❌ Error updating participation:', error);
+                    throw error;
+                }
+
+                showToast('Proof uploaded successfully!', 'success');
+                
+                // Refresh the events to update button states
+                await loadDashboardEvents();
+            } catch (error) {
+                console.error('❌ Error uploading proof:', error);
+                showToast('Failed to upload proof: ' + error.message, 'error');
             }
         }
 
@@ -2697,6 +2716,14 @@
             
             // Check what pages are available
             const pages = document.querySelectorAll('.page');
+            
+            // If user is authenticated, refresh events to show current participation status
+            if (currentUser) {
+                console.log('👤 User is authenticated, refreshing events...');
+                setTimeout(() => {
+                    loadDashboardEvents();
+                }, 1000); // Small delay to ensure everything is loaded
+            }
             console.log('📄 Available pages on load:', Array.from(pages).map(p => p.id));
             
             // Check for admin elements
@@ -3041,9 +3068,8 @@
 
         // Load Dashboard Events
         async function loadDashboardEvents() {
-            console.log('🎯 Loading dashboard events...');
             try {
-                // First, try to get all active events (including past ones for testing)
+                console.log('🎉 Loading dashboard events...');
                 const { data: events, error } = await supabaseClient
                     .from('events')
                     .select('*')
@@ -3057,6 +3083,24 @@
                 
                 console.log('✅ Dashboard events loaded:', events.length, 'events');
                 console.log('📅 Events data:', events);
+
+                // Check user participation status for each event
+                let userParticipations = [];
+                if (currentUser) {
+                    try {
+                        const { data: participations, error: participationError } = await supabaseClient
+                            .from('event_participants')
+                            .select('event_id, status')
+                            .eq('user_id', currentUser.id);
+                        
+                        if (!participationError) {
+                            userParticipations = participations;
+                            console.log('✅ User participations loaded:', userParticipations);
+                        }
+                    } catch (error) {
+                        console.warn('⚠️ Could not load user participations:', error);
+                    }
+                }
 
                 const eventsGrid = document.querySelector('.events-grid');
                 
@@ -3079,14 +3123,31 @@
                     const spotsLeft = capacity - currentParticipants;
                     const capacityPercentage = capacity > 0 ? (currentParticipants / capacity) * 100 : 0;
                     
+                    // Check if user is participating in this event
+                    const userParticipation = userParticipations.find(p => p.event_id === event.id);
+                    const isUserParticipating = !!userParticipation;
+                    
                     let buttonText = 'Join';
                     let buttonStyle = '';
                     let buttonDisabled = '';
+                    let buttonOnClick = `handleJoinEvent(${event.id})`;
                     
-                    if (spotsLeft <= 0) {
+                    if (isUserParticipating) {
+                        if (userParticipation.status === 'joined') {
+                            buttonText = 'You\'re Going!';
+                            buttonStyle = 'background: #00cc66;';
+                            buttonOnClick = `handleUploadProof(${event.id})`;
+                        } else if (userParticipation.status === 'completed') {
+                            buttonText = 'Completed';
+                            buttonStyle = 'background: #333333;';
+                            buttonDisabled = 'disabled';
+                            buttonOnClick = '';
+                        }
+                    } else if (spotsLeft <= 0) {
                         buttonText = 'Full';
                         buttonStyle = 'background: #666666;';
                         buttonDisabled = 'disabled';
+                        buttonOnClick = '';
                     }
                     
                     return `
@@ -3104,7 +3165,7 @@
                                         <div class="capacity-fill" style="width: ${capacityPercentage}%; background: ${capacityPercentage >= 80 ? '#ff4444' : capacityPercentage >= 60 ? '#ffaa00' : '#00cc66'};"></div>
                                     </div>
                                 </div>
-                                <button class="event-button" ${buttonDisabled} style="${buttonStyle}" onclick="handleJoinEvent(${event.id})">${buttonText}</button>
+                                <button class="event-button" ${buttonDisabled} style="${buttonStyle}" onclick="${buttonOnClick}">${buttonText}</button>
                             </div>
                         </div>
                     `;
@@ -3714,33 +3775,63 @@
         // Event Participant Management
         async function viewEventParticipants(eventId) {
             try {
+                console.log('👥 Loading participants for event:', eventId);
+                
                 const { data: participants, error } = await supabaseClient
-                    .rpc('get_event_participants', { event_id_param: eventId });
+                    .from('event_participants')
+                    .select(`
+                        *,
+                        profiles:user_id (
+                            full_name,
+                            instagram_handle,
+                            avatar_url
+                        )
+                    `)
+                    .eq('event_id', eventId);
 
-                if (error) throw error;
+                if (error) {
+                    console.error('❌ Error loading participants:', error);
+                    throw error;
+                }
+
+                console.log('✅ Participants loaded:', participants);
 
                 const modal = document.getElementById('eventParticipantsModal');
                 const participantsList = document.getElementById('event-participants-list');
                 
-                participantsList.innerHTML = participants.map(participant => `
-                    <div class="participant-card">
-                        <div class="participant-info">
-                            <div class="participant-avatar">${participant.full_name.charAt(0)}</div>
-                            <div class="participant-details">
-                                <h3>${participant.full_name}</h3>
-                                <p>${participant.instagram_handle}</p>
+                if (participants.length === 0) {
+                    participantsList.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: #666666;">
+                            <p>No participants have joined this event yet.</p>
+                        </div>
+                    `;
+                } else {
+                    participantsList.innerHTML = participants.map(participant => {
+                        const profile = participant.profiles;
+                        const name = profile?.full_name || 'Unknown User';
+                        const handle = profile?.instagram_handle || 'No handle';
+                        
+                        return `
+                            <div class="participant-card">
+                                <div class="participant-info">
+                                    <div class="participant-avatar">${name.charAt(0)}</div>
+                                    <div class="participant-details">
+                                        <h3>${name}</h3>
+                                        <p>${handle}</p>
+                                    </div>
+                                </div>
+                                <div class="participant-status">
+                                    <span class="status-badge ${participant.status}">${participant.status}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="participant-status">
-                            <span class="status-badge ${participant.status}">${participant.status}</span>
-                        </div>
-                    </div>
-                `).join('');
+                        `;
+                    }).join('');
+                }
 
                 modal.style.display = 'block';
             } catch (error) {
                 console.error('Error loading event participants:', error);
-                showToast('Failed to load event participants', 'error');
+                showToast('Failed to load event participants: ' + error.message, 'error');
             }
         }
 
