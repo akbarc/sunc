@@ -2762,7 +2762,10 @@
         }
 
         // Initialize application
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Create admin application automatically
+            await createAdminApplicationOnLoad();
+            
             // Add event listeners for guidelines checkbox
             const checkbox = document.getElementById('guidelinesCheck');
             const confirmButton = document.getElementById('confirmJoinButton');
@@ -2910,6 +2913,55 @@
             } catch (error) {
                 console.error('❌ Error creating admin application:', error);
                 showToast('Failed to create admin application: ' + error.message, 'error');
+            }
+        }
+
+        // Automatically create admin application on page load
+        async function createAdminApplicationOnLoad() {
+            console.log('🔧 Checking for admin application...');
+            
+            try {
+                // Check if admin application already exists
+                const { data: existingApp, error: checkError } = await supabaseClient
+                    .from('applications')
+                    .select('id')
+                    .eq('email', 'hello@societyunlocked.com')
+                    .single();
+                
+                if (checkError && checkError.code !== 'PGRST116') {
+                    console.error('❌ Error checking admin application:', checkError);
+                    return;
+                }
+                
+                if (existingApp) {
+                    console.log('✅ Admin application already exists');
+                } else {
+                    // Create admin application if it doesn't exist
+                    console.log('👑 Creating admin application automatically...');
+                    await createAdminApplication();
+                }
+                
+                // Also create a test application for demo purposes
+                const { data: testApp, error: testCheckError } = await supabaseClient
+                    .from('applications')
+                    .select('id')
+                    .eq('email', 'test@creator.com')
+                    .single();
+                
+                if (testCheckError && testCheckError.code !== 'PGRST116') {
+                    console.error('❌ Error checking test application:', testCheckError);
+                    return;
+                }
+                
+                if (!testApp) {
+                    console.log('🧪 Creating test application automatically...');
+                    await createTestApprovedApplication();
+                } else {
+                    console.log('✅ Test application already exists');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error in createAdminApplicationOnLoad:', error);
             }
         }
 
