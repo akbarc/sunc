@@ -221,39 +221,39 @@ CREATE TRIGGER update_participant_count
     AFTER INSERT OR DELETE ON event_participants
     FOR EACH ROW EXECUTE FUNCTION update_event_participant_count();
 
--- Update RLS policies to include admin checks
+-- Update RLS policies to include admin checks (only if they don't exist)
 DROP POLICY IF EXISTS "Events can be created by authenticated users" ON events;
 DROP POLICY IF EXISTS "Events can be updated by authenticated users" ON events;
 DROP POLICY IF EXISTS "Events can be deleted by authenticated users" ON events;
 
-CREATE POLICY "Events can be created by admins" ON events FOR INSERT WITH CHECK (
+CREATE POLICY IF NOT EXISTS "Events can be created by admins" ON events FOR INSERT WITH CHECK (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
-CREATE POLICY "Events can be updated by admins" ON events FOR UPDATE USING (
+CREATE POLICY IF NOT EXISTS "Events can be updated by admins" ON events FOR UPDATE USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
-CREATE POLICY "Events can be deleted by admins" ON events FOR DELETE USING (
+CREATE POLICY IF NOT EXISTS "Events can be deleted by admins" ON events FOR DELETE USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
 
--- Update applications policies
+-- Update applications policies (only if they don't exist)
 DROP POLICY IF EXISTS "Applications can be viewed by authenticated users" ON applications;
 DROP POLICY IF EXISTS "Applications can be updated by authenticated users" ON applications;
 
-CREATE POLICY "Applications can be viewed by admins" ON applications FOR SELECT USING (
+CREATE POLICY IF NOT EXISTS "Applications can be viewed by admins" ON applications FOR SELECT USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
-CREATE POLICY "Applications can be updated by admins" ON applications FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
-);
-
--- Add admin policy for profiles
-CREATE POLICY "Admins can update any profile" ON profiles FOR UPDATE USING (
+CREATE POLICY IF NOT EXISTS "Applications can be updated by admins" ON applications FOR UPDATE USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
 
--- Add admin policy for event participants
-CREATE POLICY "Admins can manage all participants" ON event_participants FOR ALL USING (
+-- Add admin policy for profiles (only if it doesn't exist)
+CREATE POLICY IF NOT EXISTS "Admins can update any profile" ON profiles FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+);
+
+-- Add admin policy for event participants (only if it doesn't exist)
+CREATE POLICY IF NOT EXISTS "Admins can manage all participants" ON event_participants FOR ALL USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
 
